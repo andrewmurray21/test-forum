@@ -201,7 +201,7 @@ input, textarea, select, .uneditable-input {
   outline: solid 2px #FF0000;
 }
 
-/* users index */
+/* Users index */
 
 .users {
   list-style: none;
@@ -209,10 +209,7 @@ input, textarea, select, .uneditable-input {
   li {
     overflow: auto;
     padding: 10px 0;
-    border-top: 1px solid #aeaeae;
-    &:last-child {
-      border-bottom: 1px solid #aeaeae;
-    }
+    border-bottom: 1px solid $gray-lighter;
   }
 }
 

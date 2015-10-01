@@ -29,6 +29,10 @@ class ActiveSupport::TestCase
     end
   end
 
+  def log_out_as(user)
+    session[:user_id] = nil
+  end
+
   private
 
     # Returns true inside an integration test.
