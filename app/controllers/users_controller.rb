@@ -80,7 +80,8 @@ class UsersController < ApplicationController
     def restrict_registration
       if logged_in?
         flash[:danger] = "To create a new user, please logout first."
-        redirect_to root_url
+        @user = current_user
+        redirect_to @user
       end
     end
 end

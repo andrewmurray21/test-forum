@@ -5,7 +5,12 @@
     This is the home page
   </h2>
 
-  <%= link_to "Sign up now!", '#', class: "btn btn-lg btn-primary" %>
+  <% if !logged_in? %>
+    <%= link_to "Sign up now!", signup_path, class: "btn btn-lg btn-primary" %>
+  <% else %>
+    <h5>Logged in as <%= link_to current_user.name, current_user %></h5>
+  <% end %>
+
 </div>
 
 <%= link_to image_tag("orangutan_with_baby.jpg", alt: "Test Forum"),
