@@ -16,9 +16,9 @@ class UsersController < ApplicationController
   def create
     @user = User.new(user_params)
     if @user.save
-      log_in @user
-      flash[:success] = "Welcome to the Test Forum!"
-      redirect_to @user
+      UserMailer.account_activation(@user).deliver_now
+      flash[:info] = "Please check your email to activate your account."
+      redirect_to root_url
     else
       render 'new'
     end
@@ -80,7 +80,7 @@ class UsersController < ApplicationController
     def restrict_registration
       if logged_in?
         flash[:danger] = "To create a new user, please logout first."
-        @user = User.find(params[:id])
+        @user = current_user
         redirect_to @user
       end
     end
