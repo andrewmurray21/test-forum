@@ -18,6 +18,7 @@ class SiteLayoutTest < ActionDispatch::IntegrationTest
     assert_select "a[href=?]", help_path
     assert_select "a[href=?]", about_path
     assert_select "a[href=?]", contact_path
+    #sign-up button, no logged in text
   end
 
   test "logged in homepage layout links" do
@@ -33,6 +34,7 @@ class SiteLayoutTest < ActionDispatch::IntegrationTest
     assert_select "a[href=?]", help_path
     assert_select "a[href=?]", about_path
     assert_select "a[href=?]", contact_path
+    #logged in text, no sign-up button
   end
 
   test "new user layout links" do
