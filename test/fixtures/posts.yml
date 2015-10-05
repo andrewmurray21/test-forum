@@ -1,11 +1,19 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  content: MyText
-  user_id: 
-  topic_id: 
+  content: Post1
+  user_id: 1
+  topic_id: 1
+  created_at: <%= 10.minutes.ago %>
 
 two:
-  content: MyText
-  user_id: 
-  topic_id: 
+  content: Post2
+  user_id: 1
+  topic_id: 1
+  created_at: <%= 20.minutes.ago %>
+
+most_recent:
+  content: MostRecentPost
+  user_id: 1
+  topic_id: 1
+  created_at: <%= Time.zone.now %>
