@@ -55,3 +55,10 @@ end
        topic_id: @second_forum_second_topic.id,
        user_id: @user.id)
 
+99.times do |n|
+  @first_forum_first_topic.posts.create!(
+               content:  "content-#{n+1}",
+               topic_id: @first_forum_first_topic.id,
+               user_id: @user.id)
+end
+

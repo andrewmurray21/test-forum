@@ -4,21 +4,11 @@
     <section class="user_info">
       <h1>
         <%= gravatar_for @user %>
-        <p>
-          <strong>Name:</strong>
-          <%= @user.name %>
-        </p>
-
-        <p>
-          <strong>Email:</strong>
-          <%= @user.email %>
-        </p>
-        
-        <p>
-          <%= link_to 'Edit', edit_user_path(@user) %> |
-          <%= link_to 'Back', users_path %>
-        </p>
+        <%= @user.name %>
       </h1>
+      <h5>
+        <%= @user.email %>
+      </h5>
     </section>
   </aside>
   <div class="col-md-8">

@@ -2,8 +2,16 @@
 
 one:
   title: Topic1
-  forum_id: 1
+  forum: one
 
 two:
   title: Topic2
-  forum_id: 1
+  forum: one
+
+three:
+  title: Topic1
+  forum: two
+
+four:
+  title: Topic2
+  forum: two
