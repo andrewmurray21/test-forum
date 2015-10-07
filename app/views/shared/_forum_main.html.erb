@@ -1,0 +1,28 @@
+<% if @forums.any? %>
+  <%= @forums.each do |f| %>
+    <forum_main class="col-md-8">
+      <section class="forum_info"
+        <h3><%= f.title %></h3>
+        <h5>Topics: <%= forum_topics_count(f) %>, 
+        Posts: <%= forum_posts_count(f) %></h5>
+      </section>
+    </forum_main>
+    <forum_main class="col-md-4">
+      <section class="last_post_info"
+        <% if forum_empty?(f) %>
+           <h3>No posts in this forum</h3>
+        <% else %>
+           <h3>Latest: <%= last_updated_topic_title(f) %></h3>
+           <h5><%= last_updated_topic_user(f) %>, 
+           <%= time_ago_in_words(last_updated_topic_time(f)) %> ago</h5>
+        <% end %>
+      </section>
+    </forum_main>
+  <% end %>
+<% end %>
+
+
+
+
+
+        

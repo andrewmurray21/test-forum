@@ -1,17 +1,34 @@
-<div class="center jumbotron">
-  <h1>Welcome to the Test Forum</h1>
+<% if logged_in? %>
+  <div class="row">
+    <aside class="col-md-4">
+      <section class="user_info">
+        <h5>Logged in as <%= link_to current_user.name, current_user %></h5>
+        <%= render 'shared/user_info' %>
+      </section>
+    </aside>
+  </div>
 
-  <h2>
-    This is the home page
-  </h2>
+  <div class="row">
+    <ol class="forums">
+      <%= render 'shared/forum_main' %>
+    </ol>
+  </div>
 
-  <% if !logged_in? %>
-    <%= link_to "Sign up now!", signup_path, class: "btn btn-lg btn-primary" %>
-  <% else %>
-    <h5>Logged in as <%= link_to current_user.name, current_user %></h5>
-  <% end %>
 
-</div>
 
-<%= link_to image_tag("orangutan_with_baby.jpg", alt: "Test Forum"),
+<% else %>
+  <div class="center jumbotron">
+    <h1>Welcome to the Test Forum</h1>
+
+    <h2>
+      This is the home page
+    </h2>
+
+      <%= link_to "Sign up now!", signup_path, class: "btn btn-lg btn-primary" %>
+
+  </div>
+
+   <%= link_to image_tag("orangutan_with_baby.jpg", alt: "Test Forum"),
             'http://www.google.com/' %>
+<% end %>
+
