@@ -12,6 +12,9 @@ Rails.application.routes.draw do
   resources :password_resets,     only: [:new, :create, :edit, :update]
   resources :posts,          only: [:create, :destroy]
 
+  get    'forums/:id' => 'forums#show'
+  get   'update_latest_topic_post' => 'topics#update_latest_topic_post'
+
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

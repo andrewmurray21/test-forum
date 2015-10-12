@@ -26,39 +26,27 @@
                activated_at: Time.zone.now)
 end
 
-@first_forum = Forum.create!(title:  "First Forum")
-@second_forum = Forum.create!(title:  "Second Forum")
-
-@first_forum_first_topic = @first_forum.topics.create!(
-       title: "First Forum, First Topic", forum_id: @first_forum.id)
-@first_forum_second_topic = @first_forum.topics.create!(
-       title: "First Forum, Second Topic", forum_id: @first_forum.id)
-@second_forum_first_topic = @second_forum.topics.create!(
-       title: "Second Forum, First Topic", forum_id: @second_forum.id)
-@second_forum_second_topic = @second_forum.topics.create!(
-       title: "Second Forum, Second Topic", forum_id: @second_forum.id)
-
-@first_forum_first_topic.posts.create!(
-       content: "First Post",
-       topic_id: @first_forum_first_topic.id,
-       user_id: @user.id)
-@first_forum_second_topic.posts.create!(
-       content: "Second Post",
-       topic_id: @first_forum_second_topic.id,
-       user_id: @user.id)
-@second_forum_first_topic.posts.create!(
-       content: "Third Post",
-       topic_id: @second_forum_first_topic.id,
-       user_id: @user.id)
-@second_forum_second_topic.posts.create!(
-       content: "Fourth Post",
-       topic_id: @second_forum_second_topic.id,
-       user_id: @user.id)
-
-99.times do |n|
-  @first_forum_first_topic.posts.create!(
-               content:  "content-#{n+1}",
-               topic_id: @first_forum_first_topic.id,
-               user_id: @user.id)
+@forum = Array.new
+11.times do |n|
+  @forum.push Forum.create!(
+               title:  "Forum-#{n}")
+  @topic ||= Array.new
+  20.times do |m|
+    @topic.push @forum[n].topics.create!(
+                 title: "Topic-#{m}",
+                 forum_id: @forum[n].id)
+    @post ||= Array.new
+    20.times do |o|
+      @post.push @topic[m].posts.create!(
+                   content:  "content-#{o}",
+                   topic_id: @topic[m].id,
+                   user_id: @user.id)
+      @topic[m].update_columns(last_post_id: @post[o].id)
+    end
+    @post.clear
+  end
+  @topic.clear
 end
+
+Forum.create!(title:  "Empty Forum")
 

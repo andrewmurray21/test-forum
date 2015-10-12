@@ -1,0 +1,23 @@
+<% if @forums_keys.any? %>
+  <% @forums_keys.each do |key| %>
+      <forum_main class="col-md-8">
+        <section class="forum_info"
+          <h3><%= link_to key, "forums/#{@forums_main_hash[key]["forum_id"]}"
+              %></h3>
+          <h5>Topics: <%= @forums_main_hash[key]["topics_count"] %>, 
+            Posts: <%= @forums_main_hash[key]["posts_count"] %></h5>
+        </section>
+      </forum_main>
+
+      <forum_main class="col-md-4">
+        <section class="last_post_info"
+          <h3>Latest: <%= @forums_main_hash[key]["latest_title"] %></h3>
+          <% if @forums_main_hash[key]["latest_date"] %>
+            <h5><%= @forums_main_hash[key]["latest_user"] %>, 
+              <%= time_ago_in_words(@forums_main_hash[key]["latest_date"])
+              %> ago</h5>
+          <% end %>  
+        </section>
+      </forum_main>
+  <% end %>
+<% end %> 
