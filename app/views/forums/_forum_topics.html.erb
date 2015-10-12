@@ -1,8 +1,9 @@
 <% if @forum_ids.any? %>
   <% @forum_ids.each do |f| %>
     <forum_main class="col-md-8">
-      <section class="topic_title"
-        <h3><%= Topic.find(f).title %></h3>
+      <section class="topic_title">
+        <h3><%= link_to "#{Topic.find(f).title}", "../topics/#{Topic.find(f).id}"%></h3>
+        <h5>Posts: <%= Topic.find(f).posts.count %></h5>
       </section>
     </forum_main>
     <forum_main class="col-md-4">

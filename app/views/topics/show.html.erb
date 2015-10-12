@@ -1,0 +1,26 @@
+<% provide(:title, "#{Topic.find(params[:id]).title}") %>
+<h1><%= Topic.find(params[:id]).forum.title %> > <%= Topic.find(params[:id]).title %></h1>
+
+<% if logged_in? %>
+  <div class="row">
+    <aside class="col-md-4">
+      <section class="user_info">
+        <h5>Logged in as <%= link_to current_user.name, current_user %></h5>
+      </section>
+    </aside>
+  </div>
+  <%= will_paginate @posts %>
+  <div class="row">
+    <ol class="forums">
+      <%= render 'topic_posts' %>
+    </ol>
+  </div>
+  <%= will_paginate @posts %>
+  <div class="row">
+    <aside class="col-md-4">
+      <section class="post_form">
+        <%= render 'shared/post_form' %>
+      </section>
+    </aside>
+  </div>
+<% end %>

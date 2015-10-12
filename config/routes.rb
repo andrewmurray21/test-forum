@@ -13,7 +13,7 @@ Rails.application.routes.draw do
   resources :posts,          only: [:create, :destroy]
 
   get    'forums/:id' => 'forums#show'
-  get   'update_latest_topic_post' => 'topics#update_latest_topic_post'
+  get    'topics/:id' => 'topics#show'
 
 
   # The priority is based upon order of creation: first created -> highest priority.

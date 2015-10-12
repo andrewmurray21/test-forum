@@ -1,0 +1,15 @@
+<% if @posts.any? %>
+  <% @posts.each do |f| %>
+    <forum_main class="col-md-8">
+      <section class="topic_title"
+        <h3><%= Post.find(f).content %></h3>
+      </section>
+    </forum_main>
+    <forum_main class="col-md-4">
+      <section class="last_post_info"
+           <h3>Posted By: <%= Post.find(f).user.name %></h3>
+           <h5><%= time_ago_in_words(Post.find(f).created_at) %> ago</h5>
+      </section>
+    </forum_main>
+  <% end %>
+<% end %>
