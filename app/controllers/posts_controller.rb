@@ -6,10 +6,10 @@ class PostsController < ApplicationController
     if @post.save
       Topic.find(params["post"]["topic_id"]).update_columns(last_post_id: @post.id)
       flash[:success] = "Post created!"
-      redirect_to root_url
+      redirect_to :back
     else
       flash[:alert] = "Post not created!"
-      redirect_to root_url
+      redirect_to :back
     end
   end
 
@@ -19,6 +19,6 @@ class PostsController < ApplicationController
   private
 
     def post_params
-      params.require(:post).permit(:content)
+      params.require(:post).permit(:content, :topic_id)
     end
 end

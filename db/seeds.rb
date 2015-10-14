@@ -34,6 +34,7 @@ end
   20.times do |m|
     @topic.push @forum[n].topics.create!(
                  title: "Topic-#{m}",
+                 first_post_content: "content-0",
                  forum_id: @forum[n].id)
     @post ||= Array.new
     20.times do |o|

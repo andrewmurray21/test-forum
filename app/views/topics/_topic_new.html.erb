@@ -1,0 +1,13 @@
+<%= form_for(@topic) do |f| %>
+  <%= render 'shared/error_messages', object: f.object %>
+
+  <%= f.label :title %>
+  <%= f.text_field :title, class: 'form-control' %>
+
+  <%= f.label "Post" %>
+  <%= f.text_area :first_post_content, placeholder: "Compose first post..." %>
+
+  <%= f.hidden_field :forum_id, :value => @forum_id %>
+
+<%= f.submit "Create Topic", class: "btn btn-primary" %>
+<% end %>

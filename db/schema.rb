@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151010223108) do
+ActiveRecord::Schema.define(version: 20151013222457) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -36,9 +36,10 @@ ActiveRecord::Schema.define(version: 20151010223108) do
   create_table "topics", force: :cascade do |t|
     t.text     "title"
     t.integer  "forum_id"
-    t.datetime "created_at",   null: false
-    t.datetime "updated_at",   null: false
+    t.datetime "created_at",         null: false
+    t.datetime "updated_at",         null: false
     t.integer  "last_post_id"
+    t.string   "first_post_content"
   end
 
   add_index "topics", ["forum_id"], name: "index_topics_on_forum_id", using: :btree

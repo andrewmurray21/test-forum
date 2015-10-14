@@ -9,6 +9,7 @@
       </section>
     </aside>
   </div>
+  <%= link_to "Create a new topic!", "../forums/#{params[:id]}/topics/new", class: "btn btn-lg btn-primary" %>
   <%= will_paginate @forum_ids %>
   <div class="row">
     <ol class="forums">
