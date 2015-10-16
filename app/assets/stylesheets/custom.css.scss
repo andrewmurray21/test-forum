@@ -15,10 +15,6 @@ html {
   overflow-y: scroll;
 }
 
-body {
-  padding-top: 60px;
-}
-
 section {
   overflow: auto;
 }
@@ -32,6 +28,10 @@ textarea {
   h1 {
     margin-bottom: 10px;
   }
+}
+
+span + span {
+    margin-left: 5px;
 }
 
 /* typography */

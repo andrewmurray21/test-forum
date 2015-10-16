@@ -2,13 +2,6 @@
 <h1><%= Forum.find(params[:id]).title %></h1>
 
 <% if logged_in? %>
-  <div class="row">
-    <aside class="col-md-4">
-      <section class="user_info">
-        <h5>Logged in as <%= link_to current_user.name, current_user %></h5>
-      </section>
-    </aside>
-  </div>
   <%= link_to "Create a new topic!", "../forums/#{params[:id]}/topics/new", class: "btn btn-lg btn-primary" %>
   <%= will_paginate @forum_ids %>
   <div class="row">
