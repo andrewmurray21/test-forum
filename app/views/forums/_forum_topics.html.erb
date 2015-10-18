@@ -1,16 +1,14 @@
 <% if @forum_ids.any? %>
   <% @forum_ids.each do |f| %>
-    <forum_main class="col-md-8">
-      <section class="topic_title">
-        <h3><%= link_to "#{Topic.find(f).title}", "../topics/#{Topic.find(f).id}"%></h3>
-        <h5>Posts: <%= Topic.find(f).posts.count %></h5>
-      </section>
-    </forum_main>
-    <forum_main class="col-md-4">
-      <section class="last_post_info"
-           <h3>Last Post By: <%= Topic.find(f).last_post.user.name %></h3>
-           <h5><%= time_ago_in_words(Topic.find(f).last_post.created_at) %> ago</h5>
-      </section>
-    </forum_main>
+    <tr>
+      <td class="col-md-10">
+        <p><%= link_to "#{Topic.find(f).title}", "../topics/#{Topic.find(f).id}"%></p>
+        <p>Posts: <%= Topic.find(f).posts.count %></p>
+      </td>
+      <td class="col-md-2">
+        <p>Last Post By: <%= truncate(Topic.find(f).last_post.user.name, :length => 30) %></p>
+        <p><%= time_ago_in_words(Topic.find(f).last_post.created_at) %> ago</p>
+      </td>
+    </tr>
   <% end %>
 <% end %>

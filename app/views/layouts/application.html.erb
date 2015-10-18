@@ -7,10 +7,21 @@
     <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
     <%= csrf_meta_tags %>
     <%= render 'layouts/shim' %>
+  <style>
+  .affix {
+      position: fixed;
+      top: 0px;
+      width: 100%;
+  }
+
+  .affix + .container-fluid {
+      padding-top: 70px;
+  }
+  </style>
   </head>
-  <body data-spy="scroll" data-target=".navbar" data-offset="50">
+  <body>
     <%= render 'layouts/header' %>
-    <div class="container">
+    <div class="container-fluid">
       <% flash.each do |message_type, message| %>
          <%= content_tag(:div, message, class: "alert alert-#{message_type}") %>
       <% end %>

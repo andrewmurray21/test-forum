@@ -1,16 +1,34 @@
-<% provide(:title, "#{Forum.find(params[:id]).title}") %>
-<h1><%= Forum.find(params[:id]).title %></h1>
-
 <% if logged_in? %>
-  <%= link_to "Create a new topic!", "../forums/#{params[:id]}/topics/new", class: "btn btn-lg btn-primary" %>
-  <%= will_paginate @forum_ids %>
-  <div class="row">
-    <ol class="forums">
-      <%= render 'forum_topics' %>
-    </ol>
-  </div>
-  <%= will_paginate @forum_ids %>
+<% provide(:title, "#{Forum.find(params[:id]).title}") %>
 
+<div class="container-fluid">
+  <ol class="breadcrumb">
+    <li><%= link_to "Home", root_path %></li>
+    <li><%= link_to Forum.find(params[:id]).title,
+      "../forums/#{params[:id]}" %></li>
+  </ol>
+    <%= link_to "Create a new topic!", "../forums/#{params[:id]}/topics/new", 
+      class: "btn btn-lg btn-primary" %>
+  <div class="custom_pagination">
+    <%= will_paginate @forum_ids %>
+  </div>
+  <div class="table-responsive">
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th class="col-md-8">Topic</th>
+            <th class="col-md-4">Latest</th>
+          </tr>
+        </thead>
+        <tbody>
+          <%= render 'forum_topics' %>
+        </tbody>
+      </table>
+  </div>
+  <div class="custom_pagination">
+    <%= will_paginate @forum_ids %>
+  </div>
+</div>
 
 
 <% else %>

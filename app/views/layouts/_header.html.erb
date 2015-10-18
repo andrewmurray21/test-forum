@@ -1,10 +1,9 @@
-<div class="container-fluid" style="background-color:#F44336;color:#fff;">
+<div class="container-fluid" style="background-color:#428BCA;color:#fff;height:80px;">
   <h1>TEST FORUM</h1>
 </div>
 
-<nav class="navbar navbar-inverse" data-spy="affix" data-offset-top="100">
+<nav class="navbar navbar-inverse" data-spy="affix" data-offset-top="79" id="fixedNav">
   <div class="container-fluid">
-    <div>
       <ul class="nav navbar-nav navbar-left">
         <li>
           <%= link_to root_path do %>
@@ -13,8 +12,6 @@
           <% end %>
         <li>
       </ul>
-    </div>
-    <div>
       <ul class="nav navbar-nav navbar-right">
         <% if logged_in? %>
           <li class="dropdown">
@@ -39,6 +36,12 @@
           <li><%= link_to "Log in", login_path %></li>
         <% end %>
       </ul>
-    </div>
   </div>
 </nav>
+
+<!-- Workaround for navbar not being fixed on page refresh/following a link -->
+<script>
+  $(document).ready(function(){
+    $("#fixedNav").affix({offset: {top: 79} }); 
+  });
+</script>
