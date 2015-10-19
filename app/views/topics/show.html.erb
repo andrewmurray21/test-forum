@@ -1,19 +1,39 @@
-<% provide(:title, "#{Topic.find(params[:id]).title}") %>
-<h1><%= Topic.find(params[:id]).forum.title %> > <%= Topic.find(params[:id]).title %></h1>
-
 <% if logged_in? %>
-  <%= will_paginate @posts %>
-  <div class="row">
-    <ol class="forums">
-      <%= render 'topic_posts' %>
-    </ol>
+
+<% provide(:title, "#{Topic.find(params[:id]).title}") %>
+
+<div class="container-fluid">
+  <ol class="breadcrumb">
+    <li><%= link_to "Home", root_path %></li>
+    <li><%= link_to truncate(Topic.find(params[:id]).forum.title, :length => 30),
+      "../forums/#{Topic.find(params[:id]).forum.id}" %></li>
+    <li><%= link_to truncate(Topic.find(params[:id]).title, :length => 30),
+      "../topics/#{params[:id]}" %></li>
+  </ol>
+  <div class="custom_pagination">
+    <%= will_paginate @posts, :inner_window => 1, :outer_window => 0  %>
   </div>
-  <%= will_paginate @posts %>
-  <div class="row">
-    <aside class="col-md-4">
-      <section class="post_form">
+  <div class="table-responsive">
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th class="col-md-2">Author</th>
+            <th class="col-md-10">Post</th>
+          </tr>
+        </thead>
+        <tbody>
+          <%= render 'topic_posts' %>
+        </tbody>
+      </table>
+  </div>
+</div>
+    <div class="col-md-6">
         <%= render 'shared/post_form' %>
-      </section>
-    </aside>
-  </div>
+    </div>
+    <div class="custom_pagination">
+      <%= will_paginate @posts, :inner_window => 1, :outer_window => 0  %>
+    </div>
+
+
+
 <% end %>

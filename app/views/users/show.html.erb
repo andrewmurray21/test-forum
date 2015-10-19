@@ -17,7 +17,7 @@
       <ol class="posts">
         <%= render @posts %>
       </ol>
-      <%= will_paginate @posts %>
+      <%= will_paginate @posts, :inner_window => 1, :outer_window => 0 %>
     <% end %>
   </div>
 </div>

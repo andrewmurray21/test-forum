@@ -9,7 +9,9 @@
       </td>
 
       <td class="col-md-2">
-          <p><%= truncate(@forums_main_hash[key]["latest_title"], :length => 30) %></p>
+          <p data-toggle="tooltip" title="<%= @forums_main_hash[key]["latest_title"] %>">
+            <%= truncate(@forums_main_hash[key]["latest_title"], :length => 30) %>
+          </p>
           <% if @forums_main_hash[key]["latest_date"] %>
             <p><%= @forums_main_hash[key]["latest_user"] %>, 
               <%= time_ago_in_words(@forums_main_hash[key]["latest_date"])

@@ -7,11 +7,18 @@
     <li><%= link_to Forum.find(params[:id]).title,
       "../forums/#{params[:id]}" %></li>
   </ol>
+  
+
+
+
+  <div>
     <%= link_to "Create a new topic!", "../forums/#{params[:id]}/topics/new", 
-      class: "btn btn-lg btn-primary" %>
-  <div class="custom_pagination">
-    <%= will_paginate @forum_ids %>
+      {class: "btn btn-sm btn-primary", style: "float:left"} %>
   </div>
+  <div class="custom_pagination">
+    <%= will_paginate @forum_ids, :inner_window => 1, :outer_window => 0  %>
+  </div>
+
   <div class="table-responsive">
       <table class="table table-striped">
         <thead>
@@ -26,24 +33,9 @@
       </table>
   </div>
   <div class="custom_pagination">
-    <%= will_paginate @forum_ids %>
+    <%= will_paginate @forum_ids, :inner_window => 1, :outer_window => 0 %>
   </div>
 </div>
 
-
-<% else %>
-  <div class="center jumbotron">
-    <h1>Welcome to the Test Forum</h1>
-
-    <h2>
-      This is the home page
-    </h2>
-
-      <%= link_to "Sign up now!", signup_path, class: "btn btn-lg btn-primary" %>
-
-  </div>
-
-   <%= link_to image_tag("orangutan_with_baby.jpg", alt: "Test Forum"),
-            'http://www.google.com/' %>
 <% end %>
 
