@@ -14,6 +14,23 @@ class PostsController < ApplicationController
   end
 
   def destroy
+    Post.find(params[:id]).destroy
+    flash[:success] = "Post deleted"
+    redirect_to :back
+  end
+
+  def edit
+    @post = Post.find(params[:id])
+  end
+
+  def update
+    @post = Post.find(params[:id])
+    if @post.update_attributes(:content => params["content"])
+      flash[:success] = "Post updated"
+      redirect_to :back
+    else
+      render 'edit'
+    end
   end
 
   private
@@ -21,4 +38,5 @@ class PostsController < ApplicationController
     def post_params
       params.require(:post).permit(:content, :topic_id)
     end
+
 end

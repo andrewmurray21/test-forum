@@ -25,7 +25,7 @@ class StaticPagesController < ApplicationController
       end
      end
 
-    @forums_keys = @forums_main_hash.keys.paginate(page: params[:page], per_page: 5)
+    @forums_keys = @forums_main_hash.keys.paginate(page: params[:page], per_page: 10)
     
   end
 

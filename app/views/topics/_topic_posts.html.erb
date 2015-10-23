@@ -2,11 +2,50 @@
   <% @posts.each do |f| %>
     <tr>
       <td class="col-md-2">
-         <p><%= Post.find(f).user.name %></p>
-         <p><%= time_ago_in_words(Post.find(f).created_at) %> ago</p>
+         <%= link_to gravatar_for(f.user, size: 50), f.user %>
+         <p><%= f.user.name %></p>
+         <p><%= time_ago_in_words(f.created_at) %> ago</p>
       </td>
-      <td class="col-md-10">
-        <p><%= Post.find(f).content %></p>
+      <td class="col-md-9">
+        <p><%= word_wrap(f.content) %></p>
       </td>
+      <td class="col-md-1">
+        <% if current_user.admin? || current_user?(f.user) %>
+
+          <button id="Modal_<%= f.id %>" type="button" class="btn btn-primary btn-xs" 
+            data-toggle="modal" data-target="#myModal_<%= f.id %>">
+            <span class="glyphicon glyphicon-edit"></span>
+          </button>
+
+          <div class="modal fade" id="myModal_<%= f.id %>" role="dialog">
+            <div class="vertical-alignment-helper">
+            <div class="modal-dialog vertical-align-center"> 
+              <div class="modal-content">
+                <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                  <h4 class="modal-title">Edit Post</h4>
+                </div>
+                <div class="modal-body">
+                  <%= form_tag post_path(f.id), :method => :patch do %>
+                    <%= text_area_tag "content", f.content %>
+                    <%= hidden_field_tag "topic_id", f.topic %>
+                    <%= submit_tag "Submit", class: "btn btn-primary" %>
+                  <% end %>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                </div>
+              </div>
+            </div>
+            </div>
+          </div>
+
+          <%= link_to f, method: :delete, 
+            data: { confirm: "You sure?" }, class: "btn btn-primary btn-xs" do %>
+            <span class="glyphicon glyphicon-trash"></span>
+          <% end %>
+        <% end %>
+      </td>
+    </tr>
   <% end %>
 <% end %>

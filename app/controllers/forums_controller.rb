@@ -9,7 +9,7 @@ class ForumsController < ApplicationController
 
     sorted = topics_list.sort_by{|k, v| v}.reverse
     @forum_ids = sorted.collect {|k, v| k}
-    @forum_ids = @forum_ids.paginate(page: params[:page], per_page: 5)
+    @forum_ids = @forum_ids.paginate(page: params[:page], per_page: 10)
   end
 
 end

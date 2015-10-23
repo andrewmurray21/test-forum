@@ -1,12 +1,48 @@
 <% if @forum_ids.any? %>
   <% @forum_ids.each do |f| %>
     <tr>
-      <td class="col-md-10">
-        <p><%= link_to "#{Topic.find(f).title}", 
-          "../topics/#{Topic.find(f).id}"%></p>
+      <td class="col-md-9">
+        <p><%= link_to word_wrap("#{Topic.find(f).title}"), 
+          "../topics/#{Topic.find(f).id}" %></p>
           <p>By: <%= Topic.find(f).posts.last.user.name %> at 
           <%= Topic.find(f).posts.last.created_at.to_formatted_s(:db) %>, 
           Posts: <%= Topic.find(f).posts.count %></p>
+      </td>
+      <td class="col-md-1">
+        <% if current_user.admin? || current_user?(Topic.find(f).posts.last.user) %>
+
+          <button id="Modal_<%= Topic.find(f).id %>" type="button" class="btn btn-primary btn-xs" 
+            data-toggle="modal" data-target="#myModal_<%= Topic.find(f).id %>">
+            <span class="glyphicon glyphicon-edit"></span>
+          </button>
+
+          <div class="modal fade" id="myModal_<%= Topic.find(f).id %>" role="dialog">
+            <div class="vertical-alignment-helper">
+            <div class="modal-dialog vertical-align-center"> 
+              <div class="modal-content">
+                <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                  <h4 class="modal-title">Edit Topic Title</h4>
+                </div>
+                <div class="modal-body">
+                  <%= form_tag topic_path(Topic.find(f).id), :method => :patch do %>
+                    <%= text_field_tag "title", Topic.find(f).title %>
+                    <%= submit_tag "Submit", class: "btn btn-primary" %>
+                  <% end %>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                </div>
+              </div>
+            </div>
+            </div>
+          </div>
+
+          <%= link_to Topic.find(f), method: :delete, 
+            data: { confirm: "You sure?" }, class: "btn btn-primary btn-xs" do %>
+            <span class="glyphicon glyphicon-trash"></span>
+          <% end %>
+        <% end %>
       </td>
       <td class="col-md-2">
         <p>Last Post By: <%= truncate(Topic.find(f).last_post.user.name, :length => 30) %></p>

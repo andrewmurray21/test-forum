@@ -2,7 +2,7 @@ class TopicsController < ApplicationController
 
   def show
     @posts = Topic.find(params[:id]).posts
-    @posts = @posts.paginate(page: params[:page], per_page: 5)
+    @posts = @posts.paginate(page: params[:page], per_page: 10)
 
     @posts_form = current_user.posts.where(topic_id: params[:id]).build
     @post_topic = Topic.find(params[:id]).id
@@ -35,7 +35,25 @@ class TopicsController < ApplicationController
   end
 
   def destroy
-  
+    topic_to_delete = Topic.find(params[:id])
+    topic_to_delete.update_attributes(:last_post => nil)
+    topic_to_delete.destroy
+    flash[:success] = "Topic deleted"
+    redirect_to :back
+  end
+
+  def edit
+    @topic = Topic.find(params[:id])
+  end
+
+  def update
+    @topic = Topic.find(params[:id])
+    if @topic.update_attributes(:title => params["title"])
+      flash[:success] = "Topic updated"
+      redirect_to :back
+    else
+      render 'edit'
+    end
   end
 
   private
