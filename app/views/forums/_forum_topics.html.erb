@@ -1,22 +1,22 @@
-<% if @forum_ids.any? %>
-  <% @forum_ids.each do |f| %>
+<% if @topics.any? %>
+  <% @topics.each do |f| %>
     <tr>
       <td class="col-md-9">
-        <p><%= link_to word_wrap("#{Topic.find(f).title}"), 
-          "../topics/#{Topic.find(f).id}" %></p>
-          <p>By: <%= Topic.find(f).posts.last.user.name %> at 
-          <%= Topic.find(f).posts.last.created_at.to_formatted_s(:db) %>, 
-          Posts: <%= Topic.find(f).posts.count %></p>
+        <p><%= link_to word_wrap(f.title), 
+          "../topics/#{f.id}" %></p>
+          <p>By: <%= f.posts.last.user.name %> at 
+          <%= f.posts.last.created_at.to_formatted_s(:db) %>, 
+          Posts: <%= f.posts.count %></p>
       </td>
       <td class="col-md-1">
-        <% if current_user.admin? || current_user?(Topic.find(f).posts.last.user) %>
+        <% if current_user.admin? || current_user?(f.posts.last.user) %>
 
-          <button id="Modal_<%= Topic.find(f).id %>" type="button" class="btn btn-primary btn-xs" 
-            data-toggle="modal" data-target="#myModal_<%= Topic.find(f).id %>">
+          <button id="Modal_<%= f.id %>" type="button" class="btn btn-primary btn-xs" 
+            data-toggle="modal" data-target="#myModal_<%= f.id %>">
             <span class="glyphicon glyphicon-edit"></span>
           </button>
 
-          <div class="modal fade" id="myModal_<%= Topic.find(f).id %>" role="dialog">
+          <div class="modal fade" id="myModal_<%= f.id %>" role="dialog">
             <div class="vertical-alignment-helper">
             <div class="modal-dialog vertical-align-center"> 
               <div class="modal-content">
@@ -25,8 +25,8 @@
                   <h4 class="modal-title">Edit Topic Title</h4>
                 </div>
                 <div class="modal-body">
-                  <%= form_tag topic_path(Topic.find(f).id), :method => :patch do %>
-                    <%= text_field_tag "title", Topic.find(f).title %>
+                  <%= form_tag topic_path(f.id), :method => :patch do %>
+                    <%= text_field_tag "title", f.title %>
                     <%= submit_tag "Submit", class: "btn btn-primary" %>
                   <% end %>
                 </div>
@@ -38,15 +38,15 @@
             </div>
           </div>
 
-          <%= link_to Topic.find(f), method: :delete, 
+          <%= link_to f, method: :delete, 
             data: { confirm: "You sure?" }, class: "btn btn-primary btn-xs" do %>
             <span class="glyphicon glyphicon-trash"></span>
           <% end %>
         <% end %>
       </td>
       <td class="col-md-2">
-        <p>Last Post By: <%= truncate(Topic.find(f).last_post.user.name, :length => 30) %></p>
-        <p><%= time_ago_in_words(Topic.find(f).last_post.created_at) %> ago</p>
+        <p>Last Post By: <%= truncate(f.last_post.user.name, :length => 30) %></p>
+        <p><%= time_ago_in_words(f.last_post.created_at) %> ago</p>
       </td>
     </tr>
   <% end %>

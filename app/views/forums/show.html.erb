@@ -1,22 +1,22 @@
 <% if logged_in? %>
-<% provide(:title, "#{Forum.find(params[:id]).title}") %>
+<% provide(:title, "#{@current_forum.title}") %>
 
 <div class="container-fluid">
   <ol class="breadcrumb">
     <li><%= link_to "Home", root_path %></li>
-    <li><%= link_to Forum.find(params[:id]).title,
-      "../forums/#{params[:id]}" %></li>
+    <li><%= link_to @current_forum.title,
+      "../forums/#{@current_forum.id}" %></li>
   </ol>
   
 
 
 
   <div>
-    <%= link_to "Create a new topic!", "../forums/#{params[:id]}/topics/new", 
+    <%= link_to "Create a new topic!", "../forums/#{@current_forum.id}/topics/new", 
       {class: "btn btn-sm btn-primary", style: "float:left"} %>
   </div>
   <div class="custom_pagination">
-    <%= will_paginate @forum_ids, :inner_window => 1, :outer_window => 0  %>
+    <%= will_paginate @topics, :inner_window => 1, :outer_window => 0  %>
   </div>
 
   <div class="table-responsive">
@@ -34,7 +34,7 @@
       </table>
   </div>
   <div class="custom_pagination">
-    <%= will_paginate @forum_ids, :inner_window => 1, :outer_window => 0 %>
+    <%= will_paginate @topics, :inner_window => 1, :outer_window => 0 %>
   </div>
 </div>
 
