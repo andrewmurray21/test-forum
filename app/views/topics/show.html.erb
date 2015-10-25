@@ -1,13 +1,13 @@
 <% if logged_in? %>
 
-<% provide(:title, "#{Topic.find(params[:id]).title}") %>
+<% provide(:title, "#{@current_topic.title}") %>
 
 <div class="container-fluid">
   <ol class="breadcrumb">
     <li><%= link_to "Home", root_path %></li>
-    <li><%= link_to truncate(Topic.find(params[:id]).forum.title, :length => 30),
-      "../forums/#{Topic.find(params[:id]).forum.id}" %></li>
-    <li><%= link_to truncate(Topic.find(params[:id]).title, :length => 30),
+    <li><%= link_to truncate(@current_topic.forum.title, :length => 30),
+      "../forums/#{@current_topic.forum.id}" %></li>
+    <li><%= link_to truncate(@current_topic.title, :length => 30),
       "../topics/#{params[:id]}" %></li>
   </ol>
   <div class="custom_pagination">
