@@ -1,40 +1,39 @@
 <% if logged_in? %>
-
-<% provide(:title, "#{@current_topic.title}") %>
+<% provide(:title, "#{@current_forum.title}") %>
 
 <div class="container-fluid">
   <ol class="breadcrumb">
-    <li><%= link_to "Home", root_path %></li>
-    <li><%= link_to truncate(@current_topic.forum.title, :length => 30),
-      "../forums/#{@current_topic.forum.id}" %></li>
-    <li><%= link_to truncate(@current_topic.title, :length => 30),
-      "../topics/#{params[:id]}" %></li>
+    <li><%= link_to "Forums Home", forums_show_path %></li>
+    <li><%= link_to @current_forum.title,
+      topics_show_path(@current_forum.id) %></li>
   </ol>
-  <div class="custom_pagination">
-    <%= will_paginate @posts, :inner_window => 1, :outer_window => 0  %>
+
+  <div>
+    <%= link_to "Create a new topic!", new_topic_path(@current_forum.id), 
+      {class: "btn btn-sm btn-primary", style: "float:left"} %>
   </div>
+  <div class="custom_pagination">
+    <%= will_paginate @topics, :inner_window => 1, :outer_window => 0  %>
+  </div>
+
   <div class="table-responsive">
       <table class="table table-striped">
         <thead>
           <tr>
-            <th class="col-md-2">Author</th>
-            <th class="col-md-9">Post</th>
+            <th class="col-md-7">Topic</th>
             <th class="col-md-1"></th>
+            <th class="col-md-4">Latest</th>
           </tr>
         </thead>
         <tbody>
-          <%= render 'topic_posts' %>
+          <%= render 'forum_topics' %>
         </tbody>
       </table>
   </div>
+  <div class="custom_pagination">
+    <%= will_paginate @topics, :inner_window => 1, :outer_window => 0 %>
+  </div>
 </div>
-    <div class="col-md-6">
-        <%= render 'shared/post_form' %>
-    </div>
-    <div class="custom_pagination">
-      <%= will_paginate @posts, :inner_window => 1, :outer_window => 0  %>
-    </div>
-
-
 
 <% end %>
+

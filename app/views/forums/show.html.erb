@@ -1,42 +1,24 @@
-<% if logged_in? %>
-<% provide(:title, "#{@current_forum.title}") %>
-
 <div class="container-fluid">
   <ol class="breadcrumb">
-    <li><%= link_to "Home", root_path %></li>
-    <li><%= link_to @current_forum.title,
-      "../forums/#{@current_forum.id}" %></li>
+    <li><%= link_to "Forums Home", forums_show_path %></li>
   </ol>
-  
-
-
-
-  <div>
-    <%= link_to "Create a new topic!", "../forums/#{@current_forum.id}/topics/new", 
-      {class: "btn btn-sm btn-primary", style: "float:left"} %>
-  </div>
   <div class="custom_pagination">
-    <%= will_paginate @topics, :inner_window => 1, :outer_window => 0  %>
+    <%= will_paginate @forums, :inner_window => 1, :outer_window => 0 %>
   </div>
-
   <div class="table-responsive">
       <table class="table table-striped">
         <thead>
           <tr>
-            <th class="col-md-7">Topic</th>
-            <th class="col-md-1"></th>
+            <th class="col-md-8">Forum</th>
             <th class="col-md-4">Latest</th>
           </tr>
         </thead>
         <tbody>
-          <%= render 'forum_topics' %>
+          <%= render 'forums' %>
         </tbody>
       </table>
   </div>
   <div class="custom_pagination">
-    <%= will_paginate @topics, :inner_window => 1, :outer_window => 0 %>
+    <%= will_paginate @forums, :inner_window => 1, :outer_window => 0  %>
   </div>
 </div>
-
-<% end %>
-

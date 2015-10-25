@@ -1,37 +1,17 @@
-<% if logged_in? %>
 <% provide(:title, 'Forums Home') %>
 
-<div class="container-fluid">
-  <ol class="breadcrumb">
-    <li><%= link_to "Home", root_path %></li>
-  </ol>
-  <div class="custom_pagination">
-    <%= will_paginate @forums, :inner_window => 1, :outer_window => 0 %>
-  </div>
-  <div class="table-responsive">
-      <table class="table table-striped">
-        <thead>
-          <tr>
-            <th class="col-md-8">Forum</th>
-            <th class="col-md-4">Latest</th>
-          </tr>
-        </thead>
-        <tbody>
-          <%= render 'forums/forum' %>
-        </tbody>
-      </table>
-  </div>
-  <div class="custom_pagination">
-    <%= will_paginate @forums, :inner_window => 1, :outer_window => 0  %>
-  </div>
-</div>
-
-<% else %>
-  <div class="center jumbotron">
-    <h1>Welcome to the Test Forum</h1>
+<div class="center jumbotron">
+  <h1>Welcome to the Test Forum</h1>
+  <% if logged_in? %>
+    <h2>
+      Logged in as <%= link_to current_user.name, current_user %>
+    </h2>
+    <h2>
+      <%= link_to "Enter forums!", forums_show_path, class: "btn btn-lg btn-primary" %>
+    </h2> 
+  <% else %>
     <h2>
       <%= link_to "Sign up now!", signup_path, class: "btn btn-lg btn-primary" %>
     </h2> 
-  </div>
-<% end %>
-
+  <% end %>
+</div>

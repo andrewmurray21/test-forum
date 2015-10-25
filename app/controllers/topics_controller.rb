@@ -1,11 +1,11 @@
 class TopicsController < ApplicationController
 
   def show
-    @current_topic = Topic.includes(:posts).find(params[:id])
-    @posts = @current_topic.posts.paginate(page: params[:page], per_page: 10)
+    @current_forum = Forum.find(params[:id])
 
-    @posts_form = current_user.posts.where(topic_id: params[:id]).build
-    @post_topic = Topic.find(params[:id]).id
+    @topics = Topic.includes(:last_post, :posts).where(forum_id: params[:id])
+                .order("last_post_id").reverse
+                .paginate(page: params[:page], per_page: 10)
   end
 
   def new
@@ -23,14 +23,15 @@ class TopicsController < ApplicationController
       if @post.save
         @topic.update_columns(last_post_id: @post.id)
         flash[:success] = "Topic and first post created!"
-        redirect_to "/forums/#{@forum_id}"
+        redirect_to topics_show_path(@forum_id)
       else
-        flash[:alert] = "Empty topic created!"
-        redirect_to root_path
+        @topic.destroy
+        flash[:alert] = "Topic not created!"
+        redirect_to topics_show_path(@forum_id)
       end
     else
       flash[:alert] = "Topic not created!"
-      redirect_to root_path
+      redirect_to topics_show_path(@forum_id)
     end
   end
 

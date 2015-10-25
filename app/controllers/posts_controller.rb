@@ -1,6 +1,14 @@
 class PostsController < ApplicationController
   before_action :logged_in_user, only: [:create, :destroy]
 
+  def show
+    @current_topic = Topic.includes(:posts).find(params[:topic_id])
+    @posts = @current_topic.posts.paginate(page: params[:page], per_page: 10)
+
+    @posts_form = current_user.posts.where(topic_id: params[:topic_id]).build
+    @post_topic = Topic.find(params[:topic_id]).id
+  end
+
   def create
     @post = current_user.posts.where(topic_id: params["post"]["topic_id"]).build(post_params)
     if @post.save

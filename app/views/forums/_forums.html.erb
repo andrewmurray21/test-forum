@@ -2,7 +2,7 @@
   <% @forums.each do |f| %>
     <tr>
       <td class="col-md-10">
-          <p><%= link_to f.title, "forums/#{f.id}"
+          <p><%= link_to f.title, topics_show_path(f.id)
               %></p>
           <p>Topics: <%= f.topics.count %>, 
             Posts: <%= f.posts.count %></p>

@@ -1,0 +1,39 @@
+<% if logged_in? %>
+
+<% provide(:title, "#{@current_topic.title}") %>
+
+<div class="container-fluid">
+  <ol class="breadcrumb">
+    <li><%= link_to "Forums Home", forums_show_path %></li>
+    <li><%= link_to truncate(@current_topic.forum.title, :length => 30),
+      topics_show_path(@current_topic.forum.id) %></li>
+    <li><%= truncate(@current_topic.title, :length => 30) %></li>
+  </ol>
+  <div class="custom_pagination">
+    <%= will_paginate @posts, :inner_window => 1, :outer_window => 0  %>
+  </div>
+  <div class="table-responsive">
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th class="col-md-2">Author</th>
+            <th class="col-md-9">Post</th>
+            <th class="col-md-1"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <%= render 'topic_posts' %>
+        </tbody>
+      </table>
+  </div>
+</div>
+    <div class="col-md-6">
+        <%= render 'new_post_form' %>
+    </div>
+    <div class="custom_pagination">
+      <%= will_paginate @posts, :inner_window => 1, :outer_window => 0  %>
+    </div>
+
+
+
+<% end %>

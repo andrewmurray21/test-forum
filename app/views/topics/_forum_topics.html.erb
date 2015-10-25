@@ -3,9 +3,9 @@
     <tr>
       <td class="col-md-9">
         <p><%= link_to word_wrap(f.title), 
-          "../topics/#{f.id}" %></p>
-          <p>By: <%= f.last_post.user.name %> at 
-          <%= f.last_post.created_at.to_formatted_s(:db) %>, 
+          posts_show_path(forum_id: f.forum.id, topic_id: f.id) %></p>
+          <p>By: <%= f.posts.last.user.name %> at 
+          <%= f.posts.last.created_at.to_formatted_s(:db) %>, 
           Posts: <%= f.posts.count %></p>
       </td>
       <td class="col-md-1">
