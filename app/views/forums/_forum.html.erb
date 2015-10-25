@@ -1,22 +1,25 @@
-<% if @forums_keys.any? %>
-  <% @forums_keys.each do |key| %>
+<% if @forums.any? %>
+  <% @forums.each do |f| %>
     <tr>
       <td class="col-md-10">
-          <p><%= link_to key, "forums/#{@forums_main_hash[key]["forum_id"]}"
+          <p><%= link_to f.title, "forums/#{f.id}"
               %></p>
-          <p>Topics: <%= @forums_main_hash[key]["topics_count"] %>, 
-            Posts: <%= @forums_main_hash[key]["posts_count"] %></p>
+          <p>Topics: <%= f.topics.count %>, 
+            Posts: <%= f.posts.count %></p>
       </td>
 
       <td class="col-md-2">
-          <p data-toggle="tooltip" title="<%= @forums_main_hash[key]["latest_title"] %>">
-            <%= truncate(@forums_main_hash[key]["latest_title"], :length => 30) %>
+        <% if !f.topics.empty? %>
+          <p data-toggle="tooltip" title="<%= f.topics.order("last_post_id")
+            .last.title %>">
+            <%= truncate(f.topics.order("last_post_id").last.title, :length => 30) %>
           </p>
-          <% if @forums_main_hash[key]["latest_date"] %>
-            <p><%= @forums_main_hash[key]["latest_user"] %>, 
-              <%= time_ago_in_words(@forums_main_hash[key]["latest_date"])
-              %> ago</p>
-          <% end %>
+          <p><%= f.topics.order("last_post_id").last.posts.first.user.name %>, 
+            <%= time_ago_in_words(f.topics.order("last_post_id")
+               .last.posts.first.created_at)%> ago</p>
+        <% else %>
+          <p>No topics in this forum</p>
+        <% end %>
       </td>
     </tr>
   <% end %>

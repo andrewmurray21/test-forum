@@ -6,7 +6,7 @@
     <li><%= link_to "Home", root_path %></li>
   </ol>
   <div class="custom_pagination">
-    <%= will_paginate @forums_keys, :inner_window => 1, :outer_window => 0 %>
+    <%= will_paginate @forums, :inner_window => 1, :outer_window => 0 %>
   </div>
   <div class="table-responsive">
       <table class="table table-striped">
@@ -22,7 +22,7 @@
       </table>
   </div>
   <div class="custom_pagination">
-    <%= will_paginate @forums_keys, :inner_window => 1, :outer_window => 0  %>
+    <%= will_paginate @forums, :inner_window => 1, :outer_window => 0  %>
   </div>
 </div>
 
