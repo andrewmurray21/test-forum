@@ -1,5 +1,5 @@
 class PostsController < ApplicationController
-  before_action :logged_in_user, only: [:create, :destroy]
+  before_action :logged_in_user, only: [:show, :create, :edit, :update, :destroy]
 
   def show
     @current_topic = Topic.includes(:posts).find(params[:topic_id])
@@ -12,19 +12,51 @@ class PostsController < ApplicationController
   def create
     @post = current_user.posts.where(topic_id: params["post"]["topic_id"]).build(post_params)
     if @post.save
-      Topic.find(params["post"]["topic_id"]).update_columns(last_post_id: @post.id)
-      flash[:success] = "Post created!"
-      redirect_to :back
+      if Topic.find(params["post"]["topic_id"]).update_columns(last_post_id: @post.id)
+        flash[:success] = "Post created!"
+        redirect_to :back
+      else
+        @post.destroy
+        flash[:danger] = "Post not created"
+        redirect_to :back
+      end
     else
-      flash[:alert] = "Post not created!"
+      flash[:danger] = "Post not created - content invalid (minimum 3 
+        characters, maximum 1000)!"
       redirect_to :back
     end
   end
 
   def destroy
+    topic = Topic.find_by(last_post_id: params[:id])
+    if topic
+      forum_id = topic.forum.id
+      topic.update_columns(last_post_id: nil)
+      if !topic.save
+        flash[:danger] = "Post could not be deleted"
+        redirect_to :back
+      end
+    end
+
     Post.find(params[:id]).destroy
-    flash[:success] = "Post deleted"
-    redirect_to :back
+
+    if topic && topic.posts.count == 0
+      topic.destroy
+      flash[:success] = "Post and topic deleted"
+      redirect_to topics_show_path(forum_id)
+    elsif topic
+      topic.update_columns(last_post_id: topic.posts.first.id)
+      if topic.save
+        flash[:success] = "Post deleted"
+        redirect_to :back
+      else
+        flash[:danger] = "Post could not be deleted"
+        redirect_to :back
+      end
+    else
+      flash[:success] = "Post deleted"
+      redirect_to :back
+    end
   end
 
   def edit
@@ -37,7 +69,9 @@ class PostsController < ApplicationController
       flash[:success] = "Post updated"
       redirect_to :back
     else
-      render 'edit'
+      flash[:danger] = "Post not created - content invalid (minimum length 3 
+        characters, maximum 1000)!"
+      redirect_to :back
     end
   end
 

@@ -12,11 +12,16 @@
         <% if !f.topics.empty? %>
           <p data-toggle="tooltip" title="<%= f.topics.order("last_post_id")
             .last.title %>">
-            <%= truncate(f.topics.order("last_post_id").last.title, :length => 30) %>
+            <%= link_to truncate(f.topics.order("last_post_id").last.title, 
+              :length => 30), posts_show_path(forum_id: f.id, 
+              topic_id: f.topics.order("last_post_id").last.id) %>
           </p>
-          <p><%= f.topics.order("last_post_id").last.posts.first.user.name %>, 
-            <%= time_ago_in_words(f.topics.order("last_post_id")
-               .last.posts.first.created_at)%> ago</p>
+          <p data-toggle="tooltip" title="<%= f.topics.order("last_post_id").
+              last.posts.first.user.name %>">
+            <%= link_to truncate(f.topics.order("last_post_id").last.posts.
+              first.user.name, :length => 12), f.topics.order("last_post_id").
+              last.posts.first.user %>, <%= time_ago_in_words(f.topics.
+              order("last_post_id").last.posts.first.created_at) %> ago</p>
         <% else %>
           <p>No topics in this forum</p>
         <% end %>

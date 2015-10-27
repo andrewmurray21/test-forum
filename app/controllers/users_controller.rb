@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
 
-  before_action :logged_in_user, only: [:index, :edit, :update, :destroy]
+  before_action :logged_in_user, only: [:show, :index, :edit, :update, :destroy]
   before_action :correct_user,   only: [:edit, :update]
   before_action :admin_user,     only: :destroy
   before_action :restrict_registration, only: [:new, :create]
@@ -57,6 +57,14 @@ class UsersController < ApplicationController
                                    :password_confirmation)
     end
 
+    def restrict_registration
+      if logged_in?
+        flash[:danger] = "To create a new user, please logout first."
+        @user = current_user
+        redirect_to @user
+      end
+    end
+
     # Confirms the correct user.
     def correct_user
       @user = User.find(params[:id])
@@ -66,13 +74,5 @@ class UsersController < ApplicationController
     # Confirms an admin user.
     def admin_user
       redirect_to(root_url) unless current_user.admin?
-    end
-
-    def restrict_registration
-      if logged_in?
-        flash[:danger] = "To create a new user, please logout first."
-        @user = current_user
-        redirect_to @user
-      end
     end
 end

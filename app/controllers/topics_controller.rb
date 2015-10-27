@@ -1,5 +1,7 @@
 class TopicsController < ApplicationController
 
+  before_action :logged_in_user, only: [:show, :new, :create, :edit, :update, :destroy]
+
   def show
     @current_forum = Forum.find(params[:id])
 
@@ -26,12 +28,10 @@ class TopicsController < ApplicationController
         redirect_to topics_show_path(@forum_id)
       else
         @topic.destroy
-        flash[:alert] = "Topic not created!"
-        redirect_to topics_show_path(@forum_id)
+        render 'new'
       end
     else
-      flash[:alert] = "Topic not created!"
-      redirect_to topics_show_path(@forum_id)
+      render 'new'
     end
   end
 
@@ -53,7 +53,8 @@ class TopicsController < ApplicationController
       flash[:success] = "Topic updated"
       redirect_to :back
     else
-      render 'edit'
+      flash[:danger] = "Topic not updated - title invalid (minimum length 3, maximum 100)"
+      redirect_to :back
     end
   end
 

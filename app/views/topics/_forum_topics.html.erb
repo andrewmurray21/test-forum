@@ -4,12 +4,12 @@
       <td class="col-md-9">
         <p><%= link_to word_wrap(f.title), 
           posts_show_path(forum_id: f.forum.id, topic_id: f.id) %></p>
-          <p>By: <%= f.posts.last.user.name %> at 
+          <p>By: <%= link_to f.posts.last.user.name, f.posts.last.user %> at 
           <%= f.posts.last.created_at.to_formatted_s(:db) %>, 
           Posts: <%= f.posts.count %></p>
       </td>
       <td class="col-md-1">
-        <% if current_user.admin? || current_user?(f.last_post.user) %>
+        <% if current_user.admin? || current_user?(f.posts.last.user) %>
 
           <button id="Modal_<%= f.id %>" type="button" class="btn btn-primary btn-xs" 
             data-toggle="modal" data-target="#myModal_<%= f.id %>">
@@ -39,13 +39,14 @@
           </div>
 
           <%= link_to f, method: :delete, 
-            data: { confirm: "You sure?" }, class: "btn btn-primary btn-xs" do %>
+            data: { confirm: "Are you sure?" }, class: "btn btn-primary btn-xs" do %>
             <span class="glyphicon glyphicon-trash"></span>
           <% end %>
         <% end %>
       </td>
       <td class="col-md-2">
-        <p>Last Post By: <%= truncate(f.last_post.user.name, :length => 30) %></p>
+        <p>Last Post By: <%= link_to truncate(f.last_post.user.name, 
+          :length => 30), f.last_post.user %></p>
         <p><%= time_ago_in_words(f.last_post.created_at) %> ago</p>
       </td>
     </tr>

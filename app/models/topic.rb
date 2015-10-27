@@ -6,6 +6,7 @@ class Topic < ActiveRecord::Base
 
   attr_accessor :last_post_id
 
-  validates :title, presence: true, length: { maximum: 100 }
+  validates :title, presence: true, length: { minimum: 3, maximum: 100 }
+  validates :first_post_content, presence: true, length: { minimum: 3, maximum: 1000 }
   validates :forum_id, presence: true
 end

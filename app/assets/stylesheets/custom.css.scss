@@ -227,7 +227,7 @@ input, textarea, select, .uneditable-input {
   margin-left: 0;
 }
 
-/* microposts */
+/* posts */
 
 .posts {
   list-style: none;
@@ -334,4 +334,8 @@ forum_main {
 
 .jumbotron {
     height:40vh;
+}
+
+#fixedNav {
+    z-index: 9999;
 }
