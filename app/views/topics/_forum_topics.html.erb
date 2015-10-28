@@ -44,7 +44,7 @@
           <% end %>
         <% end %>
       </td>
-      <td class="col-md-2">
+      <td class="col-md-2 table-border">
         <p>Last Post By: <%= link_to truncate(f.last_post.user.name, 
           :length => 30), f.last_post.user %></p>
         <p><%= time_ago_in_words(f.last_post.created_at) %> ago</p>

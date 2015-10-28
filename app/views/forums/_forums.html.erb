@@ -1,14 +1,50 @@
 <% if @forums.any? %>
   <% @forums.each do |f| %>
     <tr>
-      <td class="col-md-10">
+      <td class="col-md-9">
           <p><%= link_to f.title, topics_show_path(f.id)
               %></p>
           <p>Topics: <%= f.topics.count %>, 
             Posts: <%= f.posts.count %></p>
       </td>
+      <td class="col-md-1">
+        <% if current_user.admin? %>
 
-      <td class="col-md-2">
+          <button id="Modal_<%= f.id %>" type="button" class="btn btn-primary btn-xs" 
+            data-toggle="modal" data-target="#myModal_<%= f.id %>">
+            <span class="glyphicon glyphicon-edit"></span>
+          </button>
+
+          <div class="modal fade" id="myModal_<%= f.id %>" role="dialog">
+            <div class="vertical-alignment-helper">
+            <div class="modal-dialog vertical-align-center"> 
+              <div class="modal-content">
+                <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                  <h4 class="modal-title">Edit Forum Title</h4>
+                </div>
+                <div class="modal-body">
+                  <%= form_tag forum_path(f.id), :method => :patch do %>
+                    <%= text_field_tag "title", f.title %>
+                    <%= submit_tag "Submit", class: "btn btn-primary" %>
+                  <% end %>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                </div>
+              </div>
+            </div>
+            </div>
+          </div>
+
+          <%= link_to f, method: :delete, 
+            data: { confirm: "Are you sure?" }, class: "btn btn-primary btn-xs" do %>
+            <span class="glyphicon glyphicon-trash"></span>
+          <% end %>
+        <% end %>
+      </td>
+
+      <td class="col-md-2 table-border">
         <% if !f.topics.empty? %>
           <p data-toggle="tooltip" title="<%= f.topics.order("last_post_id")
             .last.title %>">

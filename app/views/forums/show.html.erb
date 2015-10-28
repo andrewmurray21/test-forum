@@ -2,6 +2,12 @@
   <ol class="breadcrumb">
     <li><%= link_to "Forums Home", forums_show_path %></li>
   </ol>
+  <div>
+    <% if current_user.admin? %>
+      <%= link_to "Create a new forum!", new_forum_path, 
+        {class: "btn btn-sm btn-primary", style: "float:left"} %>
+    <% end %>
+  </div>
   <div class="custom_pagination">
     <%= will_paginate @forums, :inner_window => 1, :outer_window => 0 %>
   </div>
@@ -9,12 +15,15 @@
       <table class="table table-striped">
         <thead>
           <tr>
-            <th class="col-md-8">Forum</th>
-            <th class="col-md-4">Latest</th>
+            <th class="col-md-9">Forum</th>
+            <th class="col-md-1"></th>
+            <th class="col-md-2 table-title-border">Latest</th>
           </tr>
         </thead>
         <tbody>
-          <%= render 'forums' %>
+          <ol>
+            <%= render 'forums' %>
+          </ol>
         </tbody>
       </table>
   </div>

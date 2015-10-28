@@ -26,13 +26,17 @@ class PostTest < ActiveSupport::TestCase
     assert_not @post.valid?
   end
 
-  test "content should be at most 140 characters" do
+  test "content should be at most 1000 characters" do
     @post.content = "a" * 1001
+    assert_not @post.valid?
+  end
+
+  test "content should be at least 3 characters" do
+    @post.content = "a" * 2
     assert_not @post.valid?
   end
 
   test "order should be most recent first" do
     assert_equal posts(:most_recent), Post.first
   end
-
 end

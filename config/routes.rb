@@ -12,11 +12,13 @@ Rails.application.routes.draw do
   resources :password_resets,     only: [:new, :create, :edit, :update]
   resources :posts,          only: [:create, :destroy, :edit, :update]
   resources :topics,         only: [:create, :destroy, :edit, :update]
+  resources :forums,         only: [:create, :destroy, :edit, :update]
 
   get    'forums' => 'forums#show', as: 'forums_show'
   get    'forum/:id/topics' => 'topics#show', as: 'topics_show'
   get    'forum/:forum_id/topic/:topic_id' => 'posts#show', as: 'posts_show'
   get    'forum/:id/topics/new'  => 'topics#new', as: 'new_topic'
+  get    'forum/new'  => 'forums#new', as: 'new_forum'
 
 
   # The priority is based upon order of creation: first created -> highest priority.

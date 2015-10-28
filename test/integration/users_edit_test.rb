@@ -53,7 +53,7 @@ class UsersEditTest < ActionDispatch::IntegrationTest
     #check forwarding only occurs once
     log_out_as(@user)
     log_in_as(@user)
-    assert_redirected_to root_url
+    assert_redirected_to forums_show_url
 
   end
 end

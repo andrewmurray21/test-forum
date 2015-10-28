@@ -12,6 +12,12 @@ two:
   topic: two
   created_at: <%= 20.minutes.ago %>
 
+three:
+  content: Post3
+  user: four
+  topic: two
+  created_at: <%= 20.minutes.ago %>
+
 <% 30.times do |n| %>
 post_<%= n %>:
   content: <%= "Post #{n}" %>
