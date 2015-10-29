@@ -7,10 +7,18 @@
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
 @user = User.create!(name:  "Admin User",
-             email: "admin@testforum.com",
+             email: "testforum63@gmail.com",
              password:              "password",
              password_confirmation: "password",
              admin: true,
+             activated: true,
+             activated_at: Time.zone.now)
+
+@other_user = User.create!(name:  "Other User",
+             email: "testforum096@gmail.com",
+             password:              "password",
+             password_confirmation: "password",
+             admin: false,
              activated: true,
              activated_at: Time.zone.now)
 
@@ -33,18 +41,25 @@ end
   @topic ||= Array.new
   20.times do |m|
     @topic.push @forum[n].topics.create!(
-                 title: "Topic-#{m}",
-                 first_post_content: "content-0",
+                 title: "Topic-#{Faker::Lorem.sentence(Random.rand(1...6))}",
+                 first_post_content: Faker::Lorem.sentence(Random.rand(10...100)),
                  forum_id: @forum[n].id)
     @post ||= Array.new
+    @other_post ||= Array.new
     20.times do |o|
       @post.push @topic[m].posts.create!(
-                   content:  "content-#{o}",
+                   content:  Faker::Lorem.sentence(Random.rand(10...100)),
                    topic_id: @topic[m].id,
                    user_id: @user.id)
       @topic[m].update_columns(last_post_id: @post[o].id)
+      @other_post.push @topic[m].posts.create!(
+                   content:  Faker::Lorem.sentence(Random.rand(10...100)),
+                   topic_id: @topic[m].id,
+                   user_id: @other_user.id)
+      @topic[m].update_columns(last_post_id: @other_post[o].id)
     end
     @post.clear
+    @other_post.clear
   end
   @topic.clear
 end

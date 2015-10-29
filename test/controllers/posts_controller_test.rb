@@ -4,12 +4,13 @@ class PostsControllerTest < ActionController::TestCase
 
   def setup
     @post = posts(:one)
-    @post2 = posts(:three)
+    @post3 = posts(:three)
+    @post4 = posts(:four)
     @forum = forums(:one)
     @topic = topics(:one)
     @user = users(:one)
-    @other_user = users(:two)
-    @another_user = users(:four)
+    @user2 = users(:two)
+    @user4 = users(:four)
   end
 
   test "should get show" do
@@ -49,7 +50,7 @@ class PostsControllerTest < ActionController::TestCase
   end
 
   test "should redirect update when logged in as non post owner user" do
-    log_in_as(@another_user)
+    log_in_as(@user4)
     patch :update, id: @post, post: { content: "Post1" }
     assert flash.empty?
     assert_redirected_to root_url
@@ -71,20 +72,20 @@ class PostsControllerTest < ActionController::TestCase
   end
 
   test "should redirect destroy when logged in as non post owner user" do
-    log_in_as(@other_user)
+    log_in_as(@user2)
     assert_no_difference 'Post.count' do
-      delete :destroy, id: @post2
+      delete :destroy, id: @post3
     end
     assert_redirected_to root_url
   end
 
   test "should allow destroy when logged in as post owner" do
-    log_in_as(@another_user)
+    log_in_as(@user4)
     assert_difference 'Post.count', -1 do
-      delete :destroy, id: @post2
+      delete :destroy, id: @post4
     end
-    assert_redirected_to posts_show_path(forum_id: @post2.topic.forum.id,
-      topic_id: @post2.topic.id)
+    assert_redirected_to posts_show_path(forum_id: @post4.topic.forum.id,
+      topic_id: @post4.topic.id)
   end
 
   test "should allow destroy when logged in as admin user" do

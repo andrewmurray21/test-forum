@@ -42,9 +42,7 @@
           </div>
 
           <%= link_to f, method: :delete, 
-            data: { confirm: 
-              "If this is the only post in the topic, the topic itself will also be deleted.
-              Are you sure?" }, class: "btn btn-primary btn-xs" do %>
+            data: { confirm: "Attention: If this is the only post in the topic or the first post in the topic, the topic itself will also be deleted. Are you sure?" }, class: "btn btn-primary btn-xs" do %>
             <span class="glyphicon glyphicon-trash"></span>
           <% end %>
         <% end %>

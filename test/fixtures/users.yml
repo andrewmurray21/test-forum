@@ -23,6 +23,7 @@ four:
   name: NameStringFour
   email: valid4@email.com
   password_digest: <%= User.digest('password') %>
+  admin: false
   activated: true
   activated_at: <%= Time.zone.now %>
 

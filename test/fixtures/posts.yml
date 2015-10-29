@@ -10,13 +10,19 @@ two:
   content: Post2
   user: one
   topic: two
-  created_at: <%= 20.minutes.ago %>
+  created_at: <%= 10.minutes.ago %>
 
 three:
   content: Post3
   user: four
   topic: two
-  created_at: <%= 20.minutes.ago %>
+  created_at: <%= 15.minutes.ago %>
+
+four:
+  content: Post4
+  user: four
+  topic: three
+  created_at: <%= 10.minutes.ago %>
 
 <% 30.times do |n| %>
 post_<%= n %>:
@@ -31,3 +37,15 @@ most_recent:
   user: one
   topic: three
   created_at: <%= Time.zone.now %>
+
+five:
+  content: Post5
+  user: four
+  topic: three
+  created_at: <%= 10.minutes.ago %>
+
+six:
+  content: Post6
+  user: four
+  topic: three
+  created_at: <%= 15.minutes.ago %>

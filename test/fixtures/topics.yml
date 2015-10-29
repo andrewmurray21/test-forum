@@ -11,7 +11,4 @@ two:
 three:
   title: Topic1
   forum: two
-
-four:
-  title: Topic2
-  forum: two
+  last_post: most_recent

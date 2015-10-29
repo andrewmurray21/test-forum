@@ -1,6 +1,6 @@
 class PostsController < ApplicationController
   before_action :logged_in_user, only: [:show, :create, :edit, :update, :destroy]
-  before_action :correct_user_or_admin,   only: [:edit, :update, :destroy]
+  before_action :correct_user_or_admin_post,   only: [:edit, :update, :destroy]
 
   def show
     @current_topic = Topic.includes(:posts).find(params[:topic_id])
@@ -32,23 +32,29 @@ class PostsController < ApplicationController
   end
 
   def destroy
+    post = Post.find(params[:id])
     topic = Topic.find_by(last_post_id: params[:id])
-    if topic
-      forum_id = topic.forum.id
-      topic.update_columns(last_post_id: nil)
-      if !topic.save
+    first_post = post.topic.posts.order("created_at").last
+    
+    if topic or first_post == post
+      post.topic.update_columns(last_post_id: nil)
+      if !post.topic.save
         flash[:danger] = "Post could not be deleted"
-        redirect_to posts_show_path(forum_id: topic.forum.id, 
-          topic_id: topic.id)
+        redirect_to posts_show_path(forum_id: post.topic.forum.id, 
+          topic_id: post.topic.id) and return
       end
     end
 
-    post = Post.find(params[:id]).destroy
+    post.destroy
 
     if topic && topic.posts.count == 0
       topic.destroy
       flash[:success] = "Post and topic deleted"
-      redirect_to topics_show_path(forum_id)
+      redirect_to topics_show_path(post.topic.forum.id)
+    elsif first_post == post
+      post.topic.destroy
+      flash[:success] = "Post and topic deleted"
+      redirect_to topics_show_path(post.topic.forum.id)
     elsif topic
       topic.update_columns(last_post_id: topic.posts.first.id)
       if topic.save

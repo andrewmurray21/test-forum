@@ -3,6 +3,6 @@
   <div class="field">
     <%= f.text_area :content, placeholder: "Compose new post..." %>
   </div>
-  <%= f.submit "Post", class: "btn btn-primary" %>
+  <%= f.submit "Post", class: "btn btn-primary", data: { disable_with: 'Submitting...' } %>
   <%= f.hidden_field :topic_id, :value => @post_topic %>
 <% end %>

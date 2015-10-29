@@ -24,8 +24,13 @@ class ApplicationController < ActionController::Base
       redirect_to(root_url) unless current_user?(@user)
     end
 
-    def correct_user_or_admin
+    def correct_user_or_admin_post
       @user = Post.find(params[:id]).user
+      redirect_to(root_url) unless current_user?(@user) or current_user.admin?
+    end
+
+    def correct_user_or_admin_topic
+      @user = Topic.find(params[:id]).posts.order("created_at").last.user
       redirect_to(root_url) unless current_user?(@user) or current_user.admin?
     end
 end

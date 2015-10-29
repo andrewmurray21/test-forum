@@ -9,5 +9,5 @@
 
   <%= f.hidden_field :forum_id, :value => @forum_id %>
 
-<%= f.submit "Create Topic", class: "btn btn-primary" %>
+<%= f.submit "Create Topic", class: "btn btn-primary", data: { disable_with: 'Submitting...' } %>
 <% end %>
