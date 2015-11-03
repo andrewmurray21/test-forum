@@ -3,7 +3,7 @@ class ForumsController < ApplicationController
   before_action :admin_user,     only: [:new, :create, :edit, :update, :destroy]
 
   def show
-    @forums = Forum.includes(:topics).order(:id).paginate(page: params[:page], per_page: 10)
+    @forums = Forum.includes(:topics).order(:created_at).paginate(page: params[:page], per_page: 10)
   end
 
   def new

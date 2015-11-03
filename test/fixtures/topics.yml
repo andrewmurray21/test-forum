@@ -1,14 +1,35 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-one:
+Topic1:
   title: Topic1
-  forum: one
+  forum: Forum1
+  first_post_content: "content"
+  last_post: Post1
 
-two:
+Topic2:
   title: Topic2
-  forum: one
+  forum: Forum1
+  first_post_content: "content"
+  last_post: Post2
 
-three:
-  title: Topic1
-  forum: two
-  last_post: most_recent
+Topic3:
+  title: Topic3
+  forum: Forum3
+  first_post_content: "content"
+  last_post: Post4
+
+<% 100.times do |n| %>
+Topic_<%= n+1 %>:
+  title: Topic <%= n+1 %>
+  forum: Forum_<%= ((n+1)/10).ceil %>
+  first_post_content: "content"
+  last_post: Post_<%= (n+1)*10 %>
+<% end %>
+
+<% 11.times do |n| %>
+Pg_Topic_<%= n+1 %>:
+  title: Topic <%= n+1 %>
+  forum: Forum4
+  first_post_content: "content"
+  last_post: Pg_Post_<%= n+1 %>
+<% end %>

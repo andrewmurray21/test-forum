@@ -2,11 +2,12 @@
   <% @topics.each do |f| %>
     <tr>
       <td class="col-md-9">
-        <p><%= link_to word_wrap(f.title), 
+        <p class="<%= f.id %>.title"><%= link_to word_wrap(f.title), 
           posts_show_path(forum_id: f.forum.id, topic_id: f.id) %></p>
-          <p>By: <%= link_to f.posts.last.user.name, f.posts.last.user %> at 
-          <%= f.posts.last.created_at.to_formatted_s(:db) %>, 
-          Posts: <%= f.posts.count %></p>
+          <p class="<%= f.id %>.info">By: <%= link_to f.posts.last.user.name, 
+            f.posts.last.user %>, <%= time_ago_in_words(f.posts.last
+            .created_at) %> ago. Posts: <%= f.posts.count %>
+          </p>
       </td>
       <td class="col-md-1">
         <% if current_user.admin? || current_user?(f.posts.last.user) %>
@@ -45,9 +46,9 @@
         <% end %>
       </td>
       <td class="col-md-2 table-border">
-        <p>Last Post By: <%= link_to truncate(f.last_post.user.name, 
+        <p class="<%= f.id %>.latest_post">Last Post By: <%= link_to truncate(f.last_post.user.name, 
           :length => 30), f.last_post.user %></p>
-        <p><%= time_ago_in_words(f.last_post.created_at) %> ago</p>
+        <p class="<%= f.id %>.latest_time"><%= time_ago_in_words(f.last_post.created_at) %> ago</p>
       </td>
     </tr>
   <% end %>

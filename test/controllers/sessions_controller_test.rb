@@ -3,10 +3,10 @@ require 'test_helper'
 class SessionsControllerTest < ActionController::TestCase
 
   def setup
-    @post = posts(:one)
-    @post2 = posts(:three)
-    @forum = forums(:one)
-    @topic = topics(:one)
+    @post = posts(:Post1)
+    @post2 = posts(:Post2)
+    @forum = forums(:Forum1)
+    @topic = topics(:Topic1)
     @user = users(:one)
     @unactivated_user = users(:three)
   end

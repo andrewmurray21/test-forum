@@ -3,12 +3,12 @@
     <tr>
       <td class="col-md-2">
          <%= link_to gravatar_for(f.user, size: 50), f.user %>
-         <p><%= link_to truncate(f.user.name, 
+         <p class="<%= f.id %>.user"><%= link_to truncate(f.user.name, 
               :length => 30), user_path(id: f.user.id) %></p>
-         <p><%= time_ago_in_words(f.created_at) %> ago</p>
+         <p class="<%= f.id %>.created"><%= time_ago_in_words(f.created_at) %> ago</p>
       </td>
       <td class="col-md-9 table-border">
-        <p><%= word_wrap(f.content) %></p>
+        <p class="<%= f.id %>.content"><%= word_wrap(f.content) %></p>
       </td>
       <td class="col-md-1">
         <% if current_user.admin? || current_user?(f.user) %>

@@ -2,7 +2,7 @@ require 'test_helper'
 
 class TopicTest < ActiveSupport::TestCase
   def setup
-    @forum = forums(:one)
+    @forum = forums(:Forum1)
     @user = users(:one)
     @topic = Topic.new(title: "Topic1", forum_id: @forum.id,
       first_post_content: "first post")

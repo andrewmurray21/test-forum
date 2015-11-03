@@ -1,51 +1,55 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-one:
-  content: Post1
+Post1:
+  content: "First Post"
   user: one
-  topic: one
+  topic: Topic1
+  created_at: <%= 2.minutes.ago %>
+
+Post2:
+  content: "First post in topic"
+  user: four
+  topic: Topic2
   created_at: <%= 10.minutes.ago %>
 
-two:
-  content: Post2
+Post3:
+  content: "Not first post in topic"
+  user: four
+  topic: Topic2
+  created_at: <%= 9.minutes.ago %>
+
+Post4:
+  content: "Only post in topic"
+  user: four
+  topic: Topic3
+  created_at: <%= 11.minutes.ago %>
+
+most_recent:
+  content: "Most Recent"
   user: one
-  topic: two
-  created_at: <%= 10.minutes.ago %>
-
-three:
-  content: Post3
-  user: four
-  topic: two
-  created_at: <%= 15.minutes.ago %>
-
-four:
-  content: Post4
-  user: four
-  topic: three
-  created_at: <%= 10.minutes.ago %>
+  topic: Topic2
+  created_at: <%= Time.zone.now %>
 
 <% 30.times do |n| %>
 post_<%= n %>:
-  content: <%= "Post #{n}" %>
+  content: "For user profile tests"
   user: one
-  topic: one
-  created_at: <%= "#{n+20}".to_i.minutes.ago %>
+  topic: Topic1
+  created_at: <%= "#{100-n}".to_i.minutes.ago %>
 <% end %>
 
-most_recent:
-  content: MostRecentPost
-  user: one
-  topic: three
-  created_at: <%= Time.zone.now %>
-
-five:
-  content: Post5
+<% 1000.times do |n| %>
+Post_<%= n+1 %>:
+  content: <%= "Post #{n+1}" %>
   user: four
-  topic: three
-  created_at: <%= 10.minutes.ago %>
+  topic: Topic_<%= ((n+1)/10).ceil %>
+  created_at: <%= "#{3000-n}".to_i.minutes.ago %>
+<% end %>
 
-six:
-  content: Post6
+<% 11.times do |n| %>
+Pg_Post_<%= n+1 %>:
+  content: <%= "Post #{n+1}" %>
   user: four
-  topic: three
-  created_at: <%= 15.minutes.ago %>
+  topic: Pg_Topic_<%= n+1 %>
+  created_at: <%= "#{200-n}".to_i.minutes.ago %>
+<% end %>

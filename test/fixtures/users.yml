@@ -1,5 +1,5 @@
 one:
-  name: NameString
+  name: AdminUser
   email: valid@email.com
   password_digest: <%= User.digest('password') %>
   admin: true
@@ -7,20 +7,20 @@ one:
   activated_at: <%= Time.zone.now %>
 
 two:
-  name: NameStringTwo
+  name: NonAdminNonPostOwner
   email: valid2@email.com
   password_digest: <%= User.digest('password') %>
   activated: true
   activated_at: <%= Time.zone.now %>
 
 three:
-  name: NameStringThree
+  name: NotActivated
   email: valid3@email.com
   password_digest: <%= User.digest('password') %>
   activated: false
 
 four:
-  name: NameStringFour
+  name: NonAdminPostOwner
   email: valid4@email.com
   password_digest: <%= User.digest('password') %>
   admin: false

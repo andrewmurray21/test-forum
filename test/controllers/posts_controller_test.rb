@@ -3,11 +3,10 @@ require 'test_helper'
 class PostsControllerTest < ActionController::TestCase
 
   def setup
-    @post = posts(:one)
-    @post3 = posts(:three)
-    @post4 = posts(:four)
-    @forum = forums(:one)
-    @topic = topics(:one)
+    @post = posts(:Post1)
+    @post3 = posts(:Post3)
+    @forum = forums(:Forum1)
+    @topic = topics(:Topic1)
     @user = users(:one)
     @user2 = users(:two)
     @user4 = users(:four)
@@ -79,22 +78,44 @@ class PostsControllerTest < ActionController::TestCase
     assert_redirected_to root_url
   end
 
-  test "should allow destroy when logged in as post owner" do
+  test "should allow destroy when logged in as post owner / not first post" do
     log_in_as(@user4)
     assert_difference 'Post.count', -1 do
-      delete :destroy, id: @post4
+      delete :destroy, id: @post3
     end
-    assert_redirected_to posts_show_path(forum_id: @post4.topic.forum.id,
-      topic_id: @post4.topic.id)
+    assert_redirected_to posts_show_path(forum_id: @post3.topic.forum.id,
+      topic_id: @post3.topic.id)
   end
 
-  test "should allow destroy when logged in as admin user" do
+  test "should allow destroy when logged in as admin user / not first post" do
     log_in_as(@user)
     assert_difference 'Post.count', -1 do
-      delete :destroy, id: @post
+      delete :destroy, id: @post3
     end
-    assert_redirected_to posts_show_path(forum_id: @post.topic.forum.id,
-      topic_id: @post.topic.id)
+    assert_redirected_to posts_show_path(forum_id: @post3.topic.forum.id,
+      topic_id: @post3.topic.id)
+  end
+
+  test "should allow destroy when logged in as post owner / first post" do
+    log_in_as(@user4)
+    forum_id = @post3.topic.forum.id
+    topic_id = @post3.topic.id
+    assert_difference 'Post.count', -1 do
+      delete :destroy, id: @post3
+    end
+    assert_redirected_to posts_show_path(forum_id: forum_id,
+      topic_id: topic_id)
+  end
+
+  test "should allow destroy when logged in as admin user / first post" do
+    log_in_as(@user)
+    forum_id = @post3.topic.forum.id
+    topic_id = @post3.topic.id
+    assert_difference 'Post.count', -1 do
+      delete :destroy, id: @post3
+    end
+    assert_redirected_to posts_show_path(forum_id: forum_id,
+      topic_id: topic_id)
   end
 
 end

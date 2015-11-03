@@ -3,7 +3,7 @@ require 'test_helper'
 class ForumsControllerTest < ActionController::TestCase
 
   def setup
-    @forum = forums(:one)
+    @forum = forums(:Forum1)
     @user = users(:one)
     @other_user = users(:two)
   end

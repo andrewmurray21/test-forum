@@ -3,7 +3,7 @@ require 'test_helper'
 class PostTest < ActiveSupport::TestCase
   def setup
     @user = users(:one)
-    @topic = topics(:one)
+    @topic = topics(:Topic1)
     @post = Post.new(content: "Post1", user_id: @user.id, topic_id: @topic.id)
   end
 

@@ -3,12 +3,9 @@ require 'test_helper'
 class TopicsControllerTest < ActionController::TestCase
 
   def setup
-    @post = posts(:one)
-    @post3 = posts(:three)
-    @forum = forums(:one)
-    @forum2 = forums(:two)
-    @forum3 = forums(:three)
-    @topic = topics(:one)
+    @post2 = posts(:Post2)
+    @forum = forums(:Forum1)
+    @topic = topics(:Topic1)
     @user = users(:one)
     @user2 = users(:two)
     @user4 = users(:four)
@@ -16,12 +13,12 @@ class TopicsControllerTest < ActionController::TestCase
 
   test "should get show" do
     log_in_as(@user)
-    get(:show, id: @forum2.id)
+    get(:show, id: @forum.id)
     assert_response :success
   end
 
   test "should redirect show when not logged in" do
-    get(:show, {'id' => @forum3.id})
+    get(:show, {'id' => @forum.id})
     assert_redirected_to login_url
   end
 
@@ -71,7 +68,8 @@ class TopicsControllerTest < ActionController::TestCase
   test "should redirect destroy when logged in as non first post owner user" do
     log_in_as(@user2)
     assert_no_difference 'Topic.count' do
-      delete :destroy, id: @post3.topic
+      patch :update, id: @topic, topic: { last_post_id: nil}
+      delete :destroy, id: @topic
     end
     assert_redirected_to root_url
   end
@@ -79,17 +77,21 @@ class TopicsControllerTest < ActionController::TestCase
   test "should allow destroy when logged in as first post owner" do
     log_in_as(@user4)
     assert_difference 'Topic.count', -1 do
-      delete :destroy, id: @post3.topic
+      @post2.topic.update_attributes(:last_post => nil)
+      assert_equal @post2.topic.last_post_id, nil
+      delete :destroy, id: @post2.topic
     end
-    assert_redirected_to topics_show_path(id: @post3.topic.forum.id)
+    assert_redirected_to topics_show_path(id: @post2.topic.forum.id)
   end
 
   test "should allow destroy when logged in as admin user" do
     log_in_as(@user)
     assert_difference 'Topic.count', -1 do
-      delete :destroy, id: @post.topic
+      @topic.update_attributes(:last_post => nil)
+      assert_equal @topic.last_post_id, nil
+      delete :destroy, id: @topic
     end
-    assert_redirected_to topics_show_path(id: @post.topic.forum.id)
+    assert_redirected_to topics_show_path(id: @topic.forum.id)
   end
 
 

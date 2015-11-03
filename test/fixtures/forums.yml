@@ -1,10 +1,23 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-one:
-  title: Forum1
+Forum1:
+  title: First Forum
+  created_at:  <%= 30.minutes.ago %>
 
-two:
-  title: Forum2
+Forum2:
+  title: Empty Forum
+  created_at:  <%= 25.minutes.ago %>
 
-three:
-  title: Forum3
+Forum3:
+  title: Single Topic
+  created_at:  <%= 20.minutes.ago %>
+
+Forum4:
+  title: Pagination Topic
+  created_at:  <%= 15.minutes.ago %>
+
+<% 10.times do |n| %>
+Forum_<%= n+1 %>:
+  title: <%= "Forum #{n+1}" %>
+  created_at:  <%= "#{14-n}".to_i.minutes.ago %>
+<% end %>
