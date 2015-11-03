@@ -59,7 +59,29 @@ class SiteLayoutTest < ActionDispatch::IntegrationTest
 
     check_header_and_footer(nil)
 
-    # add fields + button check
+    assert_select "form[class=?]", "new_user", method: "post",
+      action: "/users"      
+
+    assert_select "label[for=?]", "user_name", text: "Name"
+    assert_select "input[class=?]", "form-control",
+      type: "text", name: "user[name]"
+
+    assert_select "label[for=?]", "user_email", text: "Email"
+    assert_select "input[class=?]", "form-control",
+      type: "email", name: "user[email]"
+
+    assert_select "label[for=?]", "user_password", text: "Password"
+    assert_select "input[class=?]", "form-control",
+      type: "password", name: "user[password]"
+
+    assert_select "label[for=?]", "user_password_confirmation",
+      text: "Password confirmation"
+    assert_select "input[class=?]", "form-control",
+      type: "password", name: "user[password_confirmation]"
+
+    assert_select "input[type=?]", "submit", name: "commit",
+      value: "Create my account"
+
   end
 
   test "logging in user layout links" do
@@ -69,10 +91,34 @@ class SiteLayoutTest < ActionDispatch::IntegrationTest
 
     check_header_and_footer(nil)
 
-    # add field and button check
+    assert_select "form[action=?]", "/login", method: "post"
+
+    assert_select "label[for=?]", "session_email", text: "Email"
+    assert_select "input[class=?]", "form-control",
+      type: "email", name: "session[email]"
+
+    assert_select "label[for=?]", "session_password", text: "Password"
+    assert_select "a[href=?]", "/password_resets/new",
+      text: "(forgot password)"
+    assert_select "input[class=?]", "form-control",
+      type: "password", name: "session[password]"
+
+    assert_select "label[for=?]", "session_remember_me", 
+      class: "checkbox inline"
+    assert_select "input[name=?]", "session[remember_me]",
+      type: "hidden", value: "0"
+    assert_select "input[type=?]", "checkbox", value: "1",
+      name: "session[remember_me]"
+    assert_select "span", text: "Remember me on this computer"
+
+    assert_select "input[type=?]", "submit", name: "commit",
+      value: "Log in"
+
+    assert_select "a[href=?]", "/signup", text: "Sign up now!"
+
   end
 
-  test "admin logged in edit layout links" do
+  test "logged in edit layout links" do
     log_in_as(@user)
     get edit_user_path(@user)
     assert_template 'users/edit'
@@ -80,18 +126,33 @@ class SiteLayoutTest < ActionDispatch::IntegrationTest
 
     check_header_and_footer(@user)
 
-    # add field and button check
-  end
+    assert_select "form[class=?]", "edit_user", method: "post",
+      action: "/users/#{@user.id}"
 
-  test "non-admin logged in edit layout links" do
-    log_in_as(@user2)
-    get edit_user_path(@user2)
-    assert_template 'users/edit'
-    assert_select "title", full_title("Edit user")
+    assert_select "label[for=?]", "user_name", text: "Name"
+    assert_select "input[class=?]", "form-control",
+      type: "text", name: "user[name]", value: "#{@user.name}"
 
-    check_header_and_footer(@user2)
+    assert_select "label[for=?]", "user_email", text: "Email"
+    assert_select "input[class=?]", "form-control",
+      type: "email", name: "user[email]", value: "#{@user.email}"
 
-    # add field and button check
+    assert_select "label[for=?]", "user_password", text: "Password"
+    assert_select "input[class=?]", "form-control",
+      type: "password", name: "user[password]"
+
+    assert_select "label[for=?]", "user_password_confirmation",
+      text: "Password confirmation"
+    assert_select "input[class=?]", "form-control",
+      type: "password", name: "user[password_confirmation]"
+
+    assert_select "input[type=?]", "submit", name: "commit",
+      value: "Save changes"
+  
+    assert_select "img.gravatar"
+    assert_select "a[href=?]", "http://gravatar.com/emails",
+      text: "Change"
+
   end
 
   test "admin logged in forums home layout links" do
@@ -197,6 +258,26 @@ class SiteLayoutTest < ActionDispatch::IntegrationTest
       "delete", count: 1 # 10 forums per page, + 1 for logout
     assert_select "input[value=?]", 
       "patch", count: 0 # 10 forums per page
+  end
+
+  test "new forum layout links" do
+    log_in_as(@user)
+    get new_forum_path
+    assert_template 'forums/new'
+    assert_select "title", full_title("New Forum")
+
+    check_header_and_footer(@user)
+
+    assert_select "form[class=?]", "new_forum",
+      action: "/forums", method: "post"
+
+    assert_select "label[for=?]", "forum_title", text: "Title"
+    assert_select "input[class=?]", "form-control",
+      type: "text", name: "forum[title]"
+
+    assert_select "input[type=?]", "submit",
+      name: "commit", value: "Create Forum"
+
   end
 
   test "admin logged in forum topics layout links" do
@@ -331,6 +412,35 @@ class SiteLayoutTest < ActionDispatch::IntegrationTest
   end
 
 
+  test "new topic layout links" do
+    log_in_as(@user)
+    get new_topic_path(@forum.id)
+    assert_template 'topics/new'
+    assert_select "title", full_title("New Topic")
+
+    check_header_and_footer(@user)
+
+    assert_select "form[class=?]", "new_topic",
+      action: "/forums", method: "post"
+
+    assert_select "label[for=?]", "topic_title", text: "Title"
+    assert_select "input[class=?]", "form-control",
+      type: "text", name: "topic[title]"
+
+    assert_select "label[for=?]", "topic_Post", text: "Post"
+    assert_select "textarea[id=?]", "topic_first_post_content", 
+      class: "form-control",
+      placeholder: "Compose first post..."
+
+    assert_select "input[type=?]", "hidden", name: "topic[forum_id]",
+      id: @forum.id
+
+    assert_select "input[type=?]", "submit",
+      name: "commit", value: "Create Topic"
+
+  end
+
+
   test "admin logged in topic posts layout links" do
     # login and get forum home
     log_in_as(@user)
@@ -376,10 +486,121 @@ class SiteLayoutTest < ActionDispatch::IntegrationTest
       "patch", count: 3
 
     # new post form
-#    assert_select "new_post" do
-#      assert_select 
-#    end
+    assert_select "div[class=?]", "new_post col-md-6"
+    assert_select "div[class=?]", "post_content_field"
+    assert_select "input[type=?]", "submit", value: "Post"
+    assert_select "textarea[id=?]", "post_content",
+      placeholder: "Compose new post..."
+    assert_select "input[type=?]", "hidden",
+      value: "#{@forum.topics.second.id}" 
   end
 
+  test "non-admin logged in topic posts layout links / no posts owned" do
+    # login and get forum home
+    log_in_as(@user2)
+    get posts_show_path(forum_id: @forum.id, topic_id: @forum.topics.first.id)
+    assert_template 'posts/show'
+
+    # check header + footer
+    check_header_and_footer(@user2)
+
+    # breadcrumb check
+    assert_select "a[href=?]", forums_show_path, 
+      text: 'Forums Home', count: 1
+    assert_select "a[href=?]", topics_show_path(@forum.id), 
+      text: @forum.title, count: 1
+    assert_select "a[href=?]",
+      posts_show_path(forum_id: @forum.id, topic_id: @forum.topics.first.id), 
+      text: @forum.topics.first.title, count: 1
+
+    # pagination check, empty
+    assert_select "div.pagination", count: 2
+
+    get posts_show_path(forum_id: @forum.id, topic_id: @forum.topics.second.id)
+
+    # pagination check, exists
+    assert_select "div.pagination", count: 0
+
+    # first post content check
+    assert_select 'img.gravatar', more_than: 1 # already 1 in header
+    assert_select "a[href=?]", user_path(@forum.topics.second.posts.first.user), 
+      text: @forum.topics.second.posts.first.user.name, count: 1
+    assert_select "p[class=?]", 
+      "#{@forum.topics.second.posts.first.id}.created",
+      text:"#{time_ago_in_words@forum.topics.second.posts.first.created_at}"+
+      " ago"
+    assert_select "p[class=?]", 
+      "#{@forum.topics.second.posts.first.id}.content",
+      text: "#{@forum.topics.second.posts.first.content}"
+    
+    # edit/delete topic buttons check
+    assert_select "a[data-method=?]", 
+      "delete", count: 1 # 0 post owned on page, only +1 for logout
+    assert_select "input[value=?]", 
+      "patch", count: 0
+
+    # new post form
+    assert_select "div[class=?]", "new_post col-md-6"
+    assert_select "div[class=?]", "post_content_field"
+    assert_select "input[type=?]", "submit", value: "Post"
+    assert_select "textarea[id=?]", "post_content",
+      placeholder: "Compose new post..."
+    assert_select "input[type=?]", "hidden",
+      value: "#{@forum.topics.second.id}" 
+  end
+
+  test "non-admin logged in topic posts layout links / posts owner" do
+    # login and get forum home
+    log_in_as(@user4)
+    get posts_show_path(forum_id: @forum.id, topic_id: @forum.topics.first.id)
+    assert_template 'posts/show'
+
+    # check header + footer
+    check_header_and_footer(@user4)
+
+    # breadcrumb check
+    assert_select "a[href=?]", forums_show_path, 
+      text: 'Forums Home', count: 1
+    assert_select "a[href=?]", topics_show_path(@forum.id), 
+      text: @forum.title, count: 1
+    assert_select "a[href=?]",
+      posts_show_path(forum_id: @forum.id, topic_id: @forum.topics.first.id), 
+      text: @forum.topics.first.title, count: 1
+
+    # pagination check, empty
+    assert_select "div.pagination", count: 2
+
+    get posts_show_path(forum_id: @forum.id, topic_id: @forum.topics.second.id)
+
+    # pagination check, exists
+    assert_select "div.pagination", count: 0
+
+    # first post content check
+    assert_select 'img.gravatar', more_than: 1 # already 1 in header
+    assert_select "a[href=?]", user_path(@forum.topics.second.posts.first.user), 
+      text: @forum.topics.second.posts.first.user.name, count: 1
+    assert_select "p[class=?]", 
+      "#{@forum.topics.second.posts.first.id}.created",
+      text:"#{time_ago_in_words@forum.topics.second.posts.first.created_at}"+
+      " ago"
+    assert_select "p[class=?]", 
+      "#{@forum.topics.second.posts.first.id}.content",
+      text: "#{@forum.topics.second.posts.first.content}"
+    
+    # edit/delete topic buttons check
+    assert_select "a[data-method=?]", 
+      "delete", count: 3 # 2 post owned on page, +1 for logout
+    assert_select "input[value=?]", 
+      "patch", count: 2
+
+    # new post form
+    assert_select "div[class=?]", "new_post col-md-6"
+    assert_select "div[class=?]", "post_content_field"
+    assert_select "input[type=?]", "submit", value: "Post"
+    assert_select "textarea[id=?]", "post_content",
+      placeholder: "Compose new post..."
+    assert_select "input[type=?]", "hidden",
+      value: "#{@forum.topics.second.id}" 
+  end
 
 end
