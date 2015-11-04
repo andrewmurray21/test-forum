@@ -10,9 +10,9 @@ Rails.application.routes.draw do
   resources :users
   resources :account_activations, only: [:edit]
   resources :password_resets,     only: [:new, :create, :edit, :update]
-  resources :posts,          only: [:create, :destroy, :edit, :update]
-  resources :topics,         only: [:create, :destroy, :edit, :update]
-  resources :forums,         only: [:create, :destroy, :edit, :update]
+  resources :posts,          only: [:create, :destroy, :update]
+  resources :topics,         only: [:create, :destroy, :update]
+  resources :forums,         only: [:create, :destroy, :update]
 
   get    'forums' => 'forums#show', as: 'forums_show'
   get    'forum/:id/topics' => 'topics#show', as: 'topics_show'

@@ -30,22 +30,14 @@ class ForumsController < ApplicationController
       end
     end
 
-    if forum_to_delete.destroy
-      flash[:success] = "Forum deleted"
-      redirect_to forums_show_path
-    else
-      flash[:success] = "Forum could not be deleted"
-      redirect_to forums_show_path
-    end
-  end
-
-  def edit
-    @forum = Forum.find(params[:id])
+    forum_to_delete.destroy
+    flash[:success] = "Forum deleted"
+    redirect_to forums_show_path
   end
 
   def update
     @forum = Forum.find(params[:id])
-    if @forum.update_attributes(:title => params["title"])
+    if @forum.update_attributes(forum_params)
       flash[:success] = "Forum title updated"
       redirect_to forums_show_path
     else

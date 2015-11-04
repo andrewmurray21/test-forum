@@ -61,7 +61,7 @@ class UsersController < ApplicationController
       if logged_in?
         flash[:danger] = "To create a new user, please logout first."
         @user = current_user
-        redirect_to @user
+        redirect_to root_url
       end
     end
 

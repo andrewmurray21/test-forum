@@ -5,6 +5,24 @@ require "minitest/reporters"
 Minitest::Reporters.use!
 include ActionView::Helpers::DateHelper
 
+require 'simplecov'
+SimpleCov.start do
+  add_filter '/bin/'
+  add_filter '/config/'
+  add_filter '/lib/'
+  add_filter '/log/'
+  add_filter '/project/'
+  add_filter '/public/'
+  add_filter '/tmp/'
+  add_filter '/test/'
+  add_filter '/vendor/'
+ 
+  add_group 'Controllers', 'app/controllers'
+  add_group 'Mailers', 'app/mailers'
+  add_group 'Models', 'app/models'
+  add_group 'Helpers', 'app/helpers'
+end
+
 class ActiveSupport::TestCase
   # Setup all fixtures in test/fixtures/*.yml for all tests in alphabetical
   # order.

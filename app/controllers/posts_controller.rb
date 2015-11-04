@@ -1,6 +1,6 @@
 class PostsController < ApplicationController
-  before_action :logged_in_user, only: [:show, :create, :edit, :update, :destroy]
-  before_action :correct_user_or_admin_post,   only: [:edit, :update, :destroy]
+  before_action :logged_in_user, only: [:show, :create, :update, :destroy]
+  before_action :correct_user_or_admin_post,   only: [:update, :destroy]
 
   def show
     @current_topic = Topic.includes(:posts).find(params[:topic_id])
@@ -13,16 +13,10 @@ class PostsController < ApplicationController
   def create
     @post = current_user.posts.where(topic_id: params["post"]["topic_id"]).build(post_params)
     if @post.save
-      if Topic.find(params["post"]["topic_id"]).update_columns(last_post_id: @post.id)
-        flash[:success] = "Post created!"
-        redirect_to posts_show_path(forum_id: @post.topic.forum.id, 
-          topic_id: params["post"]["topic_id"])
-      else
-        @post.destroy
-        flash[:danger] = "Post not created"
-        redirect_to posts_show_path(forum_id: @post.topic.forum.id, 
-          topic_id: params["post"]["topic_id"])
-      end
+      Topic.find(params["post"]["topic_id"]).update_columns(last_post_id: @post.id)
+      flash[:success] = "Post created!"
+      redirect_to posts_show_path(forum_id: @post.topic.forum.id, 
+        topic_id: params["post"]["topic_id"])
     else
       flash[:danger] = "Post not created - content invalid (minimum 3 
         characters, maximum 1000)!"
@@ -38,34 +32,22 @@ class PostsController < ApplicationController
     
     if topic or first_post == post
       post.topic.update_columns(last_post_id: nil)
-      if !post.topic.save
-        flash[:danger] = "Post could not be deleted"
-        redirect_to posts_show_path(forum_id: post.topic.forum.id, 
-          topic_id: post.topic.id) and return
-      end
+      post.topic.save
     end
 
     post.destroy
 
-    if topic && topic.posts.count == 0
-      topic.destroy
-      flash[:success] = "Post and topic deleted"
-      redirect_to topics_show_path(post.topic.forum.id)
-    elsif first_post == post
+    if first_post == post
+      forum_id = post.topic.forum.id
       post.topic.destroy
       flash[:success] = "Post and topic deleted"
-      redirect_to topics_show_path(post.topic.forum.id)
+      redirect_to topics_show_path(forum_id)
     elsif topic
       topic.update_columns(last_post_id: topic.posts.first.id)
-      if topic.save
-        flash[:success] = "Post deleted"
-        redirect_to posts_show_path(forum_id: topic.forum.id, 
+      topic.save
+      flash[:success] = "Post deleted"
+      redirect_to posts_show_path(forum_id: topic.forum.id, 
           topic_id: topic.id)
-      else
-        flash[:danger] = "Post could not be deleted"
-        redirect_to posts_show_path(forum_id: topic.forum.id, 
-          topic_id: topic.id)
-      end
     else
       flash[:success] = "Post deleted"
       redirect_to posts_show_path(forum_id: post.topic.forum.id, 
@@ -73,18 +55,14 @@ class PostsController < ApplicationController
     end
   end
 
-  def edit
-    @post = Post.find(params[:id])
-  end
-
   def update
     @post = Post.find(params[:id])
-    if @post.update_attributes(:content => params["content"])
+    if @post.update_attributes(post_params)
       flash[:success] = "Post updated"
       redirect_to posts_show_path(forum_id: @post.topic.forum.id, 
           topic_id: @post.topic.id)
     else
-      flash[:danger] = "Post not created - content invalid (minimum length 3 
+      flash[:danger] = "Post not updated - content invalid (minimum length 3 
         characters, maximum 1000)!"
       redirect_to posts_show_path(forum_id: @post.topic.forum.id, 
           topic_id: @post.topic.id)

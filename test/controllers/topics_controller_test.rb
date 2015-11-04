@@ -31,6 +31,15 @@ class TopicsControllerTest < ActionController::TestCase
     assert_redirected_to topics_show_path(id: @forum.id)
   end
 
+  test "should not allow create with invalid data" do
+    log_in_as(@user)
+    assert_no_difference 'Topic.count' do
+      post :create, topic: { title: "t", forum_id: @forum.id,
+        first_post_content: "first post" }
+    end
+    assert_response :success # form-control reload page
+  end
+
   test "should redirect create when not logged in" do
     assert_no_difference 'Post.count' do
       post :create, topic: { title: "title", forum_id: @forum.id,
@@ -40,20 +49,28 @@ class TopicsControllerTest < ActionController::TestCase
   end
 
   test "should redirect update when not logged in" do
-    patch :update, id: @topic, topic: { title: "Post1" }
+    patch :update, id: @topic, topic: { title: "Topic1" }
     assert_not flash.empty?
     assert_redirected_to login_url
   end
 
   test "should redirect update when logged in as non post owner user" do
     log_in_as(@user4)
-    patch :update, id: @topic, topic: { title: "Post1" }
+    patch :update, id: @topic, topic: { title: "Topic1" }
     assert_redirected_to root_url
   end
 
   test "should allow update when logged in as admin user" do
     log_in_as(@user)
-    patch :update, id: @topic, topic: { title: "Post1" }
+    patch :update, id: @topic, topic: { title: "Topic1" }
+    assert_equal "Topic1", assigns(:topic).title
+    assert_not flash.empty?
+    assert_redirected_to topics_show_path(id: @topic.forum.id)
+  end
+
+  test "should not allow update with invalid data" do
+    log_in_as(@user)
+    patch :update, id: @topic, topic: { title: "T" }
     assert_not flash.empty?
     assert_redirected_to topics_show_path(id: @topic.forum.id)
   end

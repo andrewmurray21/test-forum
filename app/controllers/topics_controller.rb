@@ -23,14 +23,10 @@ class TopicsController < ApplicationController
     if @topic.save
       @post = current_user.posts.where(topic_id: @topic.id).build(
          content: @topic.first_post_content)
-      if @post.save
-        @topic.update_columns(last_post_id: @post.id)
-        flash[:success] = "Topic and first post created!"
-        redirect_to topics_show_path(@forum_id)
-      else
-        @topic.destroy
-        render 'new'
-      end
+      @post.save
+      @topic.update_columns(last_post_id: @post.id)
+      flash[:success] = "Topic and first post created!"
+      redirect_to topics_show_path(@forum_id)
     else
       render 'new'
     end
@@ -44,13 +40,9 @@ class TopicsController < ApplicationController
     redirect_to topics_show_path(topic_to_delete.forum.id)
   end
 
-  def edit
-    @topic = Topic.find(params[:id])
-  end
-
   def update
     @topic = Topic.find(params[:id])
-    if @topic.update_attributes(:title => params["title"])
+    if @topic.update_attributes(topic_params)
       flash[:success] = "Topic updated"
       redirect_to topics_show_path(@topic.forum.id)
     else

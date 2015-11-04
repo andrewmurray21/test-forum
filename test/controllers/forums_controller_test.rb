@@ -46,6 +46,14 @@ class ForumsControllerTest < ActionController::TestCase
     assert_redirected_to forums_show_url
   end
 
+  test "should not allow create with invalid data" do
+    log_in_as(@user)
+    assert_no_difference 'Forum.count' do
+      post :create, forum: { title: "f" }
+    end
+    assert_response :success # reloads form due to form-control
+  end
+
   test "should redirect create when not logged in" do
     assert_no_difference 'Forum.count' do
       post :create, forum: { title: "forum1" }
@@ -58,19 +66,6 @@ class ForumsControllerTest < ActionController::TestCase
     assert_no_difference 'Forum.count' do
       post :create, forum: { title: "forum1" }
     end
-    assert_redirected_to root_url
-  end
-
-  test "should redirect edit when not logged in" do
-    get :edit, id: @forum
-    assert_not flash.empty?
-    assert_redirected_to login_url
-  end
-
-  test "should redirect edit when not logged in as admin" do
-    log_in_as(@other_user)
-    get :edit, id: @forum
-    assert flash.empty?
     assert_redirected_to root_url
   end
 
@@ -90,6 +85,14 @@ class ForumsControllerTest < ActionController::TestCase
   test "should allow update when logged in as admin user" do
     log_in_as(@user)
     patch :update, id: @forum, forum: { title: "new" }
+    assert_equal "new", assigns(:forum).title
+    assert_not flash.empty?
+    assert_redirected_to forums_show_path
+  end
+
+  test "should not allow update with invalid data" do
+    log_in_as(@user)
+    patch :update, id: @forum, forum: { title: "t" }
     assert_not flash.empty?
     assert_redirected_to forums_show_path
   end
